@@ -1,19 +1,10 @@
 require 'spec_helper'
 
-# BOZO !! Run auth or unauth
 describe Firewater::Firebase do  
   before :all do
     @fb = Firewater::Firebase.new( "https://firewater-test.firebaseio.com" )
   end
-  
-  # describe '#on' do
-  #   it "registers a listener correctly" do
-  #     @fb.on Firewater::Firebase.value_event do |snapshot|
-  #       puts snapshot.inspect
-  #     end
-  #   end
-  # end
-  
+    
   describe 'rules' do
     before :each do
       @auth_fb = Firewater::Firebase.new( 
@@ -33,8 +24,8 @@ describe Firewater::Firebase do
            "tmp"  => { '.read' => true, '.write' => false }
       })
       res= @auth_fb.get_rules
-      res.rules.tmp['.read'].should  == true
-      res.rules.tmp['.write'].should == false
+      res.rules.tmp['.read'].should be_true
+      res.rules.tmp['.write'].should be_false
       
       res = @fb.child(:tmp).read
       res.should == { a: 0, b: 1 }
@@ -199,7 +190,7 @@ describe Firewater::Firebase do
     it "removes data correctly" do
       @fb.set( {fred: 10} )
       @fb.child( :fred ).remove
-      lambda { @fb.child( :fred ).read }.should raise_error /No data/
+      lambda { @fb.child( :fred ).read }.should raise_error( /No data/ )
     end
   end
 end

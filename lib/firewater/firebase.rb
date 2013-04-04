@@ -138,7 +138,7 @@ module Firewater
             
     def check_json( json )
       JSON.parse( json )
-    rescue => boom
+    rescue
       nil
     end    
   end
