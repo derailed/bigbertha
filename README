@@ -1,4 +1,4 @@
-Firewater - a ruby implementation of the Firebase framework
+# Firewater - Ruby implementation of the Firebase framework
 
 Firebase is a real-time backend that allows one to store key-value pairs in a hierarchical fashion, without
 having to manage additional servers. Firebase offers api's for a variety of client libs such as javascript, 
@@ -258,8 +258,8 @@ Firebase provides for setting priorities on ordered list in order to affect the 
 Setting priority affects the retrieval as follows (See firebase web site for details!):
 
 + Children with no priority are retrieved first ordered lex asc by name
-+ Children with number priority are next, sorted ordered priority, name
-+ Children with a non numeric priority come last, sorted lex asc priority, name
++ Children with number priority are next, ordered lex asc priority, name
++ Children with a non numeric priority come last, ordered lex asc priority, name
 
 
 ```ruby
