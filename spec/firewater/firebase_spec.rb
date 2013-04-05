@@ -2,15 +2,13 @@ require 'spec_helper'
 
 describe Firewater::Firebase do  
   before :all do
-    @fb = Firewater::Firebase.new( "https://firewater-test.firebaseio.com" )
+    @url = "https://firewater-test.firebaseio.com"
+    @fb = Firewater::Firebase.new( @url )
   end
     
   describe 'rules' do
     before :each do
-      @auth_fb = Firewater::Firebase.new( 
-        "https://firewater-test.firebaseio.com",
-        '531ufHDrgIBglq058gIj2HPkAFjXRhOD29rO1q79' 
-      )
+      @auth_fb = Firewater::Firebase.new( @url, ENV['fb_auth_token'] )
     end
       
     after :each do
