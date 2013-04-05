@@ -6,11 +6,17 @@ module Firewater
     
     attr_reader :url, :uri
     
+    def self.evt_value;         :value;     end
+    def self.evt_child_added;   :add_child; end
+    def self.evt_child_changed; :mod_child; end
+    def self.evt_child_removed; :rm_child;  end
+    def self.evt_child_moved;   :mv_child;  end
+    
     class NoDataError           < RuntimeError; end
     class InvalidRequestError   < RuntimeError; end
     class InvalidJSONError      < RuntimeError; end
     class PermissionDeniedError < RuntimeError; end
-    class NonNumericFieldError   < RuntimeError; end    
+    class NonNumericFieldError  < RuntimeError; end    
             
     def initialize( url, auth_token=nil )
       @url        = url

@@ -141,6 +141,7 @@ Yields:
 Fetching data in the hierarchy is done via the read operation.
 
 ```ruby
+# Setup...
 data = {
   a: {
     a_1: %s(Hello World),    
@@ -152,8 +153,10 @@ data = {
   }
 }
 ref.set( data )
-a_2_ref = ref.child( 'a/a_2' )
-a_2_ref.read  # => 10.5
+```
+
+```ruby
+ref.child( 'a/a_2' ).read # => 10.5
 a_val = ref.child( :a ).read 
 a_val.a_1    # => 'Hello World'
 a_val.a_2    # => 10.5
@@ -165,6 +168,7 @@ a_val[:a_1]  # => 'Hello World'
 You can use the #update on a reference to modify nodes in the hierarchy
 
 ```ruby
+# Setup...
 data = {
   a: {
     a_1: %s(Hello World),    
@@ -179,7 +183,9 @@ data = {
   }
 }
 ref.set( data )
+```
 
+```ruby
 ref.child( :a ).update( a_1:"BumbleBee Tuna" )
 ref.child( 'a/a_2' ).update( a_2_2:"You bet!" )
 ref.child( 'a/a_3' ).update( a_3_1:"You better!" )
@@ -208,6 +214,7 @@ no guarantees about the atomicity of read/write operations ;-(
 Use the #remove operation to delete nodes at any level in the hierarchy.
 
 ```ruby
+# Setup...
 data = {
   a: {
     a_1: %s(Hello World),    
@@ -247,6 +254,9 @@ data = {
   }
 }
 ref.set( data )
+```
+
+```ruby
 a_2_2_ref = ref.child( 'a/a_2/a_2_2' )
 a_2_2_ref = ref.child( :a ).child( :a_2 ).child( :a_2_2 ) # or...
 a_2_2_ref.name #=> 'a_2_2'
@@ -265,7 +275,6 @@ Setting priority affects the retrieval as follows (See firebase web site for det
 + Children with no priority are retrieved first ordered lex asc by name
 + Children with number priority are next, ordered lex asc priority, name
 + Children with a non numeric priority come last, ordered lex asc priority, name
-
 
 ```ruby
 a_ref = ref.push( {a:1, b:2} )
