@@ -2,11 +2,87 @@ require 'spec_helper'
 
 describe Firewater::Firebase do  
   before :all do
-    @url = "https://firewater-test.firebaseio.com"
+    @url = ENV['fb_url']
     @fb = Firewater::Firebase.new( @url )
   end
     
-  describe 'rules' do
+  describe '#inc' do
+    before :all do
+      @fb.remove      
+      @fb.set( 
+        {
+          a: {
+           a_1: 1,
+          },
+          b: {
+           b_1: 1.5
+          },
+          c: {
+           c_1: "fred" 
+          }
+        }
+      )
+    end
+    
+    it "increases an integer value correctly" do
+       @fb.child( :a ).inc( :a_1 )
+       @fb.child( 'a/a_1' ).read.should == 2
+    end
+    
+    it "increases an float value correctly" do
+       @fb.child( :b ).inc( :b_1 )
+       @fb.child( 'b/b_1' ).read.should == 2.5
+    end
+    
+    it "set the value to zero is the data does not exist" do
+      @fb.child( :b ).inc( :b_2 )
+      @fb.child( 'b/b_2' ).read.should == 0
+    end
+      
+    it "fails if the field is non numeric" do
+      lambda { @fb.child( :c ).inc( :c_1 ) }.should raise_error( Firewater::Firebase::NonNumericFieldError )
+    end    
+  end
+
+  describe '#dec' do
+    before :all do
+      @fb.remove      
+      @fb.set( 
+        {
+          a: {
+           a_1: 2,
+          },
+          b: {
+           b_1: 1.5
+          },
+          c: {
+           c_1: "fred" 
+          }
+        }
+      )
+    end
+    
+    it "decreases an integer value correctly" do
+       @fb.child( :a ).dec( :a_1 )
+       @fb.child( 'a/a_1' ).read.should == 1
+    end
+    
+    it "decreases an float value correctly" do
+       @fb.child( :b ).dec( :b_1 )
+       @fb.child( 'b/b_1' ).read.should == 0.5
+    end
+
+    it "set the value to zero is the data does not exist" do
+      @fb.child( :b ).dec( :b_2 )
+      @fb.child( 'b/b_2' ).read.should == 0
+    end
+    
+    it "fails if the field is non numeric" do
+      lambda { @fb.child( :c ).dec( :c_1 ) }.should raise_error( Firewater::Firebase::NonNumericFieldError )
+    end    
+  end
+  
+  describe '#set_rules' do
     before :each do
       @auth_fb = Firewater::Firebase.new( @url, ENV['fb_auth_token'] )
     end
@@ -34,7 +110,7 @@ describe Firewater::Firebase do
   
   describe "#read" do
     before :all do
-      @fb.clean
+      @fb.remove
       @fb.set( { 
         test_1: { 
           test_1_1: {
@@ -82,7 +158,7 @@ describe Firewater::Firebase do
 
   describe '#push' do
     before :each do
-      @fb.clean
+      @fb.remove
     end
     
     it "makes up an empty ref if no data" do
@@ -100,7 +176,7 @@ describe Firewater::Firebase do
   
   describe 'priority' do
     before :each do
-      @fb.clean
+      @fb.remove
     end
     
     it "sets priority with complex data correctly" do
@@ -173,7 +249,7 @@ describe Firewater::Firebase do
     
   describe '#remove' do
     before :each do
-      @fb.clean
+      @fb.remove
     end
     
     it "removes data correctly" do
@@ -185,7 +261,7 @@ describe Firewater::Firebase do
   
   describe '#update' do
     before :all do
-      @fb.clean
+      @fb.remove
       @fb.set( a:{b:1,c:2} )      
       @a_ref = @fb.child( :a )
     end

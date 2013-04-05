@@ -20,15 +20,15 @@ $ gem install firewater
 
 ### Setup your Firebase
 
-Sign up for a 'free' firebase account and create a new firebase of your liking.
+Sign up for a firebase account and create a new firebase of your liking.
 In the following code sample we will use the following as our base url:
 
-+ https://firewater.firebaseio.com
++ https://bozo.firebaseio.com
 
 Then you can specify an entry point into the data using the following call:
 
 ```ruby
-ref = Firewater::Firebase.new( 'https://firewater.firebaseio.com' )
+ref = Firewater::Firebase.new( 'https://bozo.firebaseio.com' )
 ```
 
 NOTE: You don't have to start a the root, but usually a good idea since this api
@@ -198,6 +198,11 @@ Yields:
 Note: the last call inserts a branch new node in the hierarchy. We could have use set here as well to
 perform the insert.
 
+You can leverage #inc/#dec to increment/decrement counter like data.
+
+IMPORTANT! Sadly Firebase currently does not offer transactions using their REST api hence there is
+no guarantees about the atomicity of read/write operations ;-(
+
 ### Deleting data
 
 Use the #remove operation to delete nodes at any level in the hierarchy.
@@ -276,7 +281,7 @@ You can secure you firebase store using a secret token and grant access for perm
 Please refer to the firebase docs for details.
 
 ```ruby
-ref = Firewater::Firebase.new( 'https://firewater.firebaseio.com', my_secret_token )
+ref = Firewater::Firebase.new( 'https://bozo.firebaseio.com', my_secret_token )
 ref.set( tmp: { a: 0, b: 1 } )
 ref.set_rules( 
   { '.read' => true, '.write' => false, 

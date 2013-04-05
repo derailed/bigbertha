@@ -1,7 +1,7 @@
 require 'firewater'
 
 ref = Firewater::Firebase.new( 'https://firewater-test.firebaseio.com' )
-ref.clean
+ref.remove
 data = {
   a: {
     a_1: %s(Hello World),    
