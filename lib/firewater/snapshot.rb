@@ -96,7 +96,7 @@ module Firewater
           node.priority = priority if priority
           build( v, node )
         else
-          node.value = v
+          node.value = v.is_a?(String) ? v.to_val : v
         end
         root.add_child( node )
       end

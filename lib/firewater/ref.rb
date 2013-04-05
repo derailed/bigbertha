@@ -26,7 +26,7 @@ module Firewater
     end
     
     def child( child_path )
-      Firewater::Firebase.new( uri.merge( child_path.to_s ).to_s )
+      Firewater::Firebase.new( "#{uri.to_s}/#{child_path}" )
     end
       
     def child?( child_path )

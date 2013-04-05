@@ -172,16 +172,7 @@ describe Firewater::Firebase do
     @fb.update( {test_1: 20 } )
     @fb.child( :test_1 ).read.to_i.should == 20
   end
-  
-  it "adds data correctly" do
-    @fb.set( {test_2: { test_3: {test_4: "Hello" } }, fred: 10 } )
-    @fb.once :value do |snapshot|
-      snapshot.should have(2).items
-      snapshot.fred.should == 10
-      snapshot.test_2.test_3.test_4.should == "Hello"
-    end    
-  end
-  
+    
   describe '#remove' do
     before :each do
       @fb.clean
@@ -193,4 +184,44 @@ describe Firewater::Firebase do
       lambda { @fb.child( :fred ).read }.should raise_error( /No data/ )
     end
   end
+  
+  describe '#update' do
+    before :all do
+      @fb.clean
+      @fb.set( a:{b:1,c:2} )      
+      @a_ref = @fb.child( :a )
+    end
+
+    describe 'oneshot' do    
+      it "updates an integer correctly" do
+        @a_ref.update( c:5 )
+        @a_ref.child( :c ).read.should == 5
+      end
+      
+      it "updates a float correctly" do
+        @a_ref.update( c:5.0 )
+        @a_ref.child( :c ).read.should == 5.0
+      end
+
+      it "updates a boolean correctly" do
+        @a_ref.update( c:true )
+        @a_ref.child( :c ).read.should be_true
+      end
+
+      it "updates a boolean correctly" do
+        @a_ref.update( c:true )
+        @a_ref.child( :c ).read.should be_true
+      end
+
+      it "updates an object correctly" do
+        @a_ref.update( c:{fred:'Hello', blee:'World'} )
+        @a_ref.child( :c ).read.should == {fred:'Hello', blee:'World'}
+      end 
+      
+      it "updates an array correctly" do
+        @a_ref.update( c:%w[Hello World] )
+        @a_ref.child( :c ).read.should == %w[Hello World]
+      end
+    end
+  end  
 end

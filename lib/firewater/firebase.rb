@@ -1,24 +1,19 @@
 require 'json'
-require 'net/http'
+require 'typhoeus'
+require 'map'
 require 'firewater/ref'
 
 module Firewater
   class Firebase
     include Firewater::Ref
     
+    attr_reader :url, :uri
+    
     class NoDataError           < RuntimeError; end
     class InvalidRequestError   < RuntimeError; end
     class InvalidJSONError      < RuntimeError; end
     class PermissionDeniedError < RuntimeError; end
-    
-    attr_reader :url, :uri
-    
-    def self.value_event;         'value'        ;end
-    def self.child_added_event;   'child_added'  ; end
-    def self.child_changed_event; 'child_changed'; end
-    def self.child_removed_event; 'child_removed'; end
-    def self.child_moved_event;   'child_moved'  ; end
-    
+            
     def initialize( url, auth_token=nil )
       @url        = url
       @uri        = URI.parse( @url )      
@@ -37,18 +32,11 @@ module Firewater
       handle_response( resp, location )
     end
             
-    def once( event_type, &block)
-      location = json_url
-      resp = Typhoeus.get( location, gen_opts )
-      res  = handle_response( resp, location )
-      yield res.is_a?(Map) ? Snapshot.new( res ).to_map : res
-    end
-
     def read
       location = json_url
       resp = Typhoeus.get( location, gen_opts( params: {format: :export} ) )
       res  = handle_response( resp, location )
-      res.is_a?(Map) ? Snapshot.new( res ).to_map : res
+      res.is_a?(Map) ? Snapshot.new( res ).to_map : res.is_a?(String) ? res.to_val : res
     end
             
     def set( data )
