@@ -2,6 +2,7 @@ require 'json'
 require 'typhoeus'
 require 'map'
 require 'firewater/ref'
+require 'core_ext/string'
 
 module Firewater
   class Firebase
