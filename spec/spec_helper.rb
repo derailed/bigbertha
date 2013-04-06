@@ -1,4 +1,4 @@
-require 'basilisk'
+require 'bigbertha'
 require 'simplecov'
 
 if ENV['COV']

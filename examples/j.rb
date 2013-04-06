@@ -1,7 +1,7 @@
-require 'basilisk'
+require 'bigbertha'
 require 'yaml'
 
-ref = Basilisk::Load.new( ENV['fb_url'] )
+ref = Bigbertha::Load.new( ENV['fb_url'] )
 ref.remove
 a_ref = ref.push( {a:1, b:2} )
 b_ref = ref.push( {c:1, d:2} )

@@ -1,6 +1,6 @@
-require 'basilisk'
+require 'bigbertha'
 
-ref = Basilisk::Load.new( ENV['fb_url'] )
+ref = Bigbertha::Load.new( ENV['fb_url'] )
 ref.remove
 data = {
   a: {

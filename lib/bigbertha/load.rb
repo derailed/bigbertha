@@ -1,9 +1,9 @@
-require 'basilisk/ref'
+require 'bigbertha/ref'
 
-module Basilisk
+module Bigbertha
   class Load
-    include Basilisk::Ref
-    include Basilisk::Action
+    include Bigbertha::Ref
+    include Bigbertha::Action
     
     attr_reader :url, :uri
     

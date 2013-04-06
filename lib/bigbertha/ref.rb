@@ -1,6 +1,6 @@
 require 'uri'
 
-module Basilisk
+module Bigbertha
   module Ref      
     def name
       parse_path[-1]
@@ -12,7 +12,7 @@ module Basilisk
     
     def root
       return self if root?
-      Basilisk::Load.new( @uri.scheme + '://' + @uri.host )            
+      Bigbertha::Load.new( @uri.scheme + '://' + @uri.host )            
     end
     
     def root?
@@ -22,11 +22,11 @@ module Basilisk
     def parent
       return nil if root?
       path = parse_path[0..-2].join( "/" )
-      Basilisk::Load.new( root.uri.merge(path).to_s )
+      Bigbertha::Load.new( root.uri.merge(path).to_s )
     end
     
     def child( child_path )
-      Basilisk::Load.new( "#{uri.to_s}/#{child_path}" )
+      Bigbertha::Load.new( "#{uri.to_s}/#{child_path}" )
     end
       
     def child?( child_path )

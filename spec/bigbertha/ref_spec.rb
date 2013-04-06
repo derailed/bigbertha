@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe Basilisk::Ref do
+describe Bigbertha::Ref do
   before :all do
-    @ref = Basilisk::Load.new( ENV['fb_url'] )
+    @ref = Bigbertha::Load.new( ENV['fb_url'] )
   end
   
   describe '#child?' do
@@ -64,7 +64,7 @@ describe Basilisk::Ref do
     end
     
     it "identifies a url name correctly" do
-      ref = Basilisk::Load.new( ENV['fb_url'] + '/fred/blee' )
+      ref = Bigbertha::Load.new( ENV['fb_url'] + '/fred/blee' )
       ref.name.should == 'blee'
     end    
   end
@@ -75,7 +75,7 @@ describe Basilisk::Ref do
     end    
 
     it "identifies non root url correctly" do
-      ref = Basilisk::Load.new( ENV['fb_url'] + '/fred/blee' )
+      ref = Bigbertha::Load.new( ENV['fb_url'] + '/fred/blee' )
       ref.root.to_s.should == ENV['fb_url']
     end        
   end
@@ -86,12 +86,12 @@ describe Basilisk::Ref do
     end
     
     it "identifies / as root correctly" do
-      ref = Basilisk::Load.new( ENV['fb_url'] + '/' )
+      ref = Bigbertha::Load.new( ENV['fb_url'] + '/' )
       ref.should be_root
     end
     
     it "identifies non root correctly" do
-      ref = Basilisk::Load.new( ENV['fb_url'] + '/fred' )
+      ref = Bigbertha::Load.new( ENV['fb_url'] + '/fred' )
       ref.should_not be_root
     end
   end
@@ -102,7 +102,7 @@ describe Basilisk::Ref do
     end
     
     it "identifies a parent correctly" do
-      ref = Basilisk::Load.new( ENV['fb_url'] + '/fred/blee' )
+      ref = Bigbertha::Load.new( ENV['fb_url'] + '/fred/blee' )
       ref.parent.to_s.should == ENV['fb_url'] + '/fred'
     end
   end

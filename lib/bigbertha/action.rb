@@ -1,8 +1,8 @@
-require 'basilisk/faults'
+require 'bigbertha/faults'
 
-module Basilisk
+module Bigbertha
   module Action    
-    include Basilisk::Faults
+    include Bigbertha::Faults
     
     def read
       location = json_url
@@ -65,7 +65,7 @@ module Basilisk
       end
       resp = Typhoeus.post( location, gen_opts( opts ) )
       res = handle_response( resp, location )
-      Basilisk::Load.new( uri.to_s + '/' + res.name )
+      Bigbertha::Load.new( uri.to_s + '/' + res.name )
     end
   
     def set_priority( priority )

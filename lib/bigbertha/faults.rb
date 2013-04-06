@@ -1,4 +1,4 @@
-module Basilisk
+module Bigbertha
   module Faults
     class NoDataError           < RuntimeError; end
     class InvalidRequestError   < RuntimeError; end

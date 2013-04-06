@@ -1,4 +1,4 @@
-module Basilisk
+module Bigbertha
   class Snapshot
       
     class Node
