@@ -1,4 +1,4 @@
-# Basilik - Ruby firepower to your Firebase batteries
+# Basilik - Ruby firepower for your Firebase batteries
 
 Firebase is a real-time backend that allows one to store key-value pairs in a hierarchical fashion, without
 having to manage additional servers. Firebase offers api's for a variety of client libs such as javascript, 
