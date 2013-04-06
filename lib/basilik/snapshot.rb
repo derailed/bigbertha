@@ -1,6 +1,6 @@
-module Firewater
+module Basilik
   class Snapshot
-  
+      
     class Node
       attr_accessor :priority, :name, :parent, :children, :value
     
@@ -16,13 +16,7 @@ module Firewater
         child.parent = self
         children << child
       end
-
-      def child( path )
-        path.split( /\// ).each do
-          
-        end
-      end
-          
+      
       def to_map
         map = Map.new
         order( map )

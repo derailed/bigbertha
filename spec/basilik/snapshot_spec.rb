@@ -1,16 +1,16 @@
 require 'spec_helper'
 require 'yaml'
 
-describe Firewater::Snapshot do
+describe Basilik::Snapshot do
   
   describe '#to_map' do
     it "sorts a simple hierarchy correctly" do
-      snap = Firewater::Snapshot.new( {a:{b:1} } )
+      snap = Basilik::Snapshot.new( {a:{b:1} } )
       snap.to_map.a.should == {b:1}
     end
     
     it "sorts a priority hierarchy correctly" do
-      snap = Firewater::Snapshot.new({
+      snap = Basilik::Snapshot.new({
         a: {
           '.priority' => 1000,
           a_1: {
@@ -41,7 +41,7 @@ describe Firewater::Snapshot do
     end
 
     it "sorts a mixed priority hierarchy correctly" do
-      snap = Firewater::Snapshot.new({
+      snap = Basilik::Snapshot.new({
         a: {
           a_1: {
             '.priority' => 20, 
@@ -94,7 +94,7 @@ describe Firewater::Snapshot do
           }
         }
       }'))
-      snap = Firewater::Snapshot.new( map )
+      snap = Basilik::Snapshot.new( map )
       map = snap.to_map
       map.keys.should == %w(-IrIRswPWIABbNj1q045 -IrIRsiaW32Hp5xUOyMZ)
       map['-IrIRsiaW32Hp5xUOyMZ'].keys.should == %w(-IrIRsrpWvE7ykm4tRBT -IrIRsnD1QRcgMU4lgH1)
@@ -124,7 +124,7 @@ describe Firewater::Snapshot do
           }
         }
       }'))
-      snap = Firewater::Snapshot.new( map )
+      snap = Basilik::Snapshot.new( map )
       map = snap.to_map
       map.keys.should == %w(-IrIRsiaW32Hp5xUOyMZ -IrIRswPWIABbNj1q045)
       map['-IrIRsiaW32Hp5xUOyMZ'].keys.should == %w(-IrIRsrpWvE7ykm4tRBT -IrIRsnD1QRcgMU4lgH1)
@@ -165,7 +165,7 @@ describe Firewater::Snapshot do
           }
         }        
       }'))
-      snap = Firewater::Snapshot.new( map )
+      snap = Basilik::Snapshot.new( map )
       map = snap.to_map
       map.keys.should == %w(-IrIRsiaW32Hp5xUOyMA -IrIRsiaW32Hp5xUOyMZ -IrIRswPWIABbNj1q045)
       map['-IrIRsiaW32Hp5xUOyMZ'].keys.should == %w(-IrIRsrpWvE7ykm4tRBT -IrIRsnD1QRcgMU4lgH1)

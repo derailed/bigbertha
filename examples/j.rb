@@ -1,7 +1,7 @@
 require 'firewater'
 require 'yaml'
 
-ref = Firewater::Firebase.new( 'https://firewater-test.firebaseio.com' )
+ref = Basilik::Root.new( 'https://firewater-test.firebaseio.com' )
 ref.remove
 a_ref = ref.push( {a:1, b:2} )
 b_ref = ref.push( {c:1, d:2} )

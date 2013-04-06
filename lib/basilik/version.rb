@@ -1,3 +1,3 @@
-module Firewater
+module Basilik
   VERSION = "0.0.1"
 end

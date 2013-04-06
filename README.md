@@ -1,7 +1,7 @@
-# Firewater - Ruby implementation of the Firebase framework
+# Basilik - Additional firepower to your Firebase batteries
 
-Firebase is a real-time backend that allows one to store key-value pairs in a hierarchical fashion, without
-having to manage additional servers. Firebase offers api's for a variety of client libs such as javascript, 
+Root is a real-time backend that allows one to store key-value pairs in a hierarchical fashion, without
+having to manage additional servers. Root offers api's for a variety of client libs such as javascript, 
 REST, IOS and now Ruby ;-). Mechanisms are in place to automatically broadcast updates to the various client sharing 
 a firebase. Pretty cool feature for application needing the share data across a variety of platforms.
 Get the firehose from http://firebase.com
@@ -28,7 +28,7 @@ In the following code sample we will use the following as our base url:
 Then you can specify an entry point into the data using the following call:
 
 ```ruby
-ref = Firewater::Firebase.new( 'https://bozo.firebaseio.com' )
+ref = Basilik::Root.new( 'https://bozo.firebaseio.com' )
 ```
 
 NOTE: You don't have to start a the root, but usually a good idea since this api
@@ -37,7 +37,7 @@ offers ways to traverse the hierarchy up or down. More on this later...
 
 ### Populating firebase
 
-Firebase supports the following data types:
+Root supports the following data types:
 
 + String
 + Number
@@ -206,7 +206,7 @@ perform the insert.
 
 You can leverage #inc/#dec to increment/decrement counter like data.
 
-IMPORTANT! Sadly Firebase currently does not offer transactions using their REST api hence there is
+IMPORTANT! Sadly Root currently does not offer transactions using their REST api hence there is
 no guarantees about the atomicity of read/write operations ;-(
 
 ### Deleting data
@@ -269,7 +269,7 @@ a_ref.name     # => 'a'
       
 ### Priorities
 
-Firebase provides for setting priorities on ordered list in order to affect the retrieval. By default priority is null.
+Root provides for setting priorities on ordered list in order to affect the retrieval. By default priority is null.
 Setting priority affects the retrieval as follows (See firebase web site for details!):
 
 + Children with no priority are retrieved first ordered lex asc by name
@@ -290,7 +290,7 @@ You can secure you firebase store using a secret token and grant access for perm
 Please refer to the firebase docs for details.
 
 ```ruby
-ref = Firewater::Firebase.new( 'https://bozo.firebaseio.com', my_secret_token )
+ref = Basilik::Root.new( 'https://bozo.firebaseio.com', my_secret_token )
 ref.set( tmp: { a: 0, b: 1 } )
 ref.set_rules( 
   { '.read' => true, '.write' => false, 
@@ -298,7 +298,7 @@ ref.set_rules(
   }
 )
 res = ref.child(:tmp).read # => { a: 0, b: 1 }
-ref.set( tmp: {d:0} ) } # => Firewater::Firebase::PermissionDeniedError
+ref.set( tmp: {d:0} ) } # => Basilik::Root::PermissionDeniedError
 ```
 
 ## Contact
@@ -311,7 +311,7 @@ Fernand Galiana
 
 ## License
 
-Firewater is released under the [MIT](http://opensource.org/licenses/MIT) license.
+Basilik is released under the [MIT](http://opensource.org/licenses/MIT) license.
 
 ## History
   0.0.1:

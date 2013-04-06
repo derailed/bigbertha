@@ -14,7 +14,8 @@ end
 
 desc 'Cleanup build artifacts'
 task :clean do
-  FileUtils.rm_r( File.expand_path( File.join( %w(.. coverage) ), __FILE__ ) )
+  cov = File.expand_path( File.join( %w(.. coverage) ), __FILE__ ) 
+  FileUtils.rm_r( cov ) if File.exists?( cov )
 end
 
 task default: :spec

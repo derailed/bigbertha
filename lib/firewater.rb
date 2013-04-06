@@ -2,7 +2,7 @@ require 'json'
 require 'typhoeus'
 require 'map'
 
-module Firewater  
+module Basilik  
   LIBPATH      = ::File.expand_path(::File.dirname(__FILE__)) + ::File::SEPARATOR
   PATH         = ::File.dirname(LIBPATH) + ::File::SEPARATOR  
   
@@ -14,4 +14,4 @@ module Firewater
   end  
 end
 
-Firewater.require_all_libs_relative_to File.expand_path( "firewater", Firewater::LIBPATH )
+Basilik.require_all_libs_relative_to File.expand_path( "firewater", Basilik::LIBPATH )

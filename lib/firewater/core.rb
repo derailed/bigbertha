@@ -1,1 +1,0 @@
-Firewater.require_all_libs_relative_to File.expand_path( File.join( %w(firewater core_ext), Firewater::LIBPATH ) )

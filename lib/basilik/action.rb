@@ -1,29 +1,28 @@
-require 'firewater/ref'
+require 'firewater/errors'
 
-module Firewater
-  class Firebase
-    include Firewater::Ref
+module Basilik
+  module Action    
+    include Basilik::Errors
     
-    attr_reader :url, :uri
-    
-    def self.evt_value;         :value;     end
-    def self.evt_child_added;   :add_child; end
-    def self.evt_child_changed; :mod_child; end
-    def self.evt_child_removed; :rm_child;  end
-    def self.evt_child_moved;   :mv_child;  end
-    
-    class NoDataError           < RuntimeError; end
-    class InvalidRequestError   < RuntimeError; end
-    class InvalidJSONError      < RuntimeError; end
-    class PermissionDeniedError < RuntimeError; end
-    class NonNumericFieldError  < RuntimeError; end    
+    def read
+      location = json_url
+      resp = Typhoeus.get( location, gen_opts( params: {format: :export} ) )
+      res  = handle_response( resp, location )
+      res.is_a?(Map) ? Snapshot.new( res ).to_map : res.is_a?(String) ? res.to_val : res
+    end
             
-    def initialize( url, auth_token=nil )
-      @url        = url
-      @uri        = URI.parse( @url )      
-      @auth_token = auth_token
+    def set( data )
+      location = json_url
+      resp = Typhoeus.put( location, gen_opts( body: data.to_json ) )
+      handle_response( resp, location )
     end
 
+    def update( data )
+      location = json_url
+      resp = Typhoeus.patch( location, gen_opts( body: data.to_json ) )
+      handle_response( resp, location )
+    end
+    
     def inc( field )
       map = read
       current_val = map[field]
@@ -47,38 +46,7 @@ module Firewater
       end
       update( field => new_val )
     end
-    
-    def get_rules
-      location = rules_url
-      resp     = Typhoeus.get( location, gen_opts )
-      handle_response( resp, location )       
-    end
-    
-    def set_rules( rules )
-      location = rules_url
-      resp     = Typhoeus.put( location, gen_opts( body: {:rules => rules}.to_json ) )
-      handle_response( resp, location )
-    end
-            
-    def read
-      location = json_url
-      resp = Typhoeus.get( location, gen_opts( params: {format: :export} ) )
-      res  = handle_response( resp, location )
-      res.is_a?(Map) ? Snapshot.new( res ).to_map : res.is_a?(String) ? res.to_val : res
-    end
-            
-    def set( data )
-      location = json_url
-      resp = Typhoeus.put( location, gen_opts( body: data.to_json ) )
-      handle_response( resp, location )
-    end
-
-    def update( data )
-      location = json_url
-      resp = Typhoeus.patch( location, gen_opts( body: data.to_json ) )
-      handle_response( resp, location )
-    end
-    
+        
     def remove
       location = json_url
       resp = Typhoeus.delete( location, gen_opts )
@@ -97,7 +65,7 @@ module Firewater
       end
       resp = Typhoeus.post( location, gen_opts( opts ) )
       res = handle_response( resp, location )
-      Firewater::Firebase.new( uri.to_s + '/' + res.name )
+      Basilik::Root.new( uri.to_s + '/' + res.name )
     end
   
     def set_priority( priority )
@@ -116,14 +84,20 @@ module Firewater
     rescue NoDataError
       nil
     end
-      
-    def auth
-      raise 'NIY'
-    end  
-    def unauth
-      raise 'NIY'
+    
+    def get_rules
+      location = rules_url
+      resp     = Typhoeus.get( location, gen_opts )
+      handle_response( resp, location )       
     end
-                
+    
+    def set_rules( rules )
+      location = rules_url
+      resp     = Typhoeus.put( location, gen_opts( body: {:rules => rules}.to_json ) )
+      handle_response( resp, location )
+    end
+    
+
     private
    
     def gen_opts( opts={} )
@@ -144,14 +118,24 @@ module Firewater
       if resp.body.empty? or resp.body == "null"
         raise NoDataError, "No data found at location #{location}"
       end
-      results = check_json( resp.body )
+      
+      results = JSON.parse( resp.body ) rescue nil
       results ? (results.is_a?(Hash) ? Map( results ) : results ) : resp.body.gsub( /\"/, '' )        
     end
-            
-    def check_json( json )
-      JSON.parse( json )
-    rescue
-      nil
+                
+    def json_url( priority=nil )
+      if @url =~ /\.json$/
+        loc = @url
+      elsif root?
+        loc = @url + "/.json"
+      else
+        loc = @url + ".json"
+      end
+      priority ? loc.gsub( /\.json$/, "/.priority/.json" ) : loc
+    end
+    
+    def rules_url
+      @uri.merge( '.settings/rules.json' ).to_s      
     end    
   end
 end
