@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe Basilik::Load do  
+describe Basilisk::Load do  
   before :all do
     @url = ENV['fb_url']
-    @fb = Basilik::Load.new( @url )
+    @fb = Basilisk::Load.new( @url )
   end
     
   describe '#inc' do
@@ -40,7 +40,7 @@ describe Basilik::Load do
     end
       
     it "fails if the field is non numeric" do
-      lambda { @fb.child( :c ).inc( :c_1 ) }.should raise_error( Basilik::Load::NonNumericFieldError )
+      lambda { @fb.child( :c ).inc( :c_1 ) }.should raise_error( Basilisk::Load::NonNumericFieldError )
     end    
   end
 
@@ -78,13 +78,13 @@ describe Basilik::Load do
     end
     
     it "fails if the field is non numeric" do
-      lambda { @fb.child( :c ).dec( :c_1 ) }.should raise_error( Basilik::Load::NonNumericFieldError )
+      lambda { @fb.child( :c ).dec( :c_1 ) }.should raise_error( Basilisk::Load::NonNumericFieldError )
     end    
   end
   
   describe '#set_rules' do
     before :each do
-      @auth_fb = Basilik::Load.new( @url, ENV['fb_auth_token'] )
+      @auth_fb = Basilisk::Load.new( @url, ENV['fb_auth_token'] )
     end
       
     after :each do
@@ -104,7 +104,7 @@ describe Basilik::Load do
       res = @fb.child(:tmp).read
       res.should == { a: 0, b: 1 }
 
-      lambda { @fb.set( tmp: { d: 0 } ) }.should raise_error Basilik::Load::PermissionDeniedError
+      lambda { @fb.set( tmp: { d: 0 } ) }.should raise_error Basilisk::Load::PermissionDeniedError
     end
   end
   

@@ -1,4 +1,4 @@
-module Basilik
+module Basilisk
   class Snapshot
       
     class Node

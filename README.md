@@ -1,4 +1,4 @@
-# Basilik - Ruby firepower for your Firebase batteries
+# Basilisk - Ruby firepower for your Firebase batteries
 
 Firebase is a real-time backend that allows one to store key-value pairs in a hierarchical fashion, without
 having to manage additional servers. Firebase offers api's for a variety of client libs such as javascript, 
@@ -13,7 +13,7 @@ sync up across the wire. Checkout http://firebase.com for the firehose...
 
 ## Getting Started
 
-$ gem install basilik
+$ gem install basilisk
 
 ## Usage
 
@@ -27,7 +27,7 @@ In the following code samples, we will use the following as our base url:
 Then you can specify an entry point into the data using the following call:
 
 ```ruby
-ref = Basilik::Load.new( 'https://zerodarkthirty.firebaseio.com' )
+ref = Basilisk::Load.new( 'https://zerodarkthirty.firebaseio.com' )
 ```
 
 NOTE: You don't have to start a the root, but usually a good idea since this api
@@ -290,7 +290,7 @@ You can secure you firebase store using a secret token and grant access for perm
 Please refer to the firebase docs for details.
 
 ```ruby
-ref = Basilik::Load.new( 'https://bozo.firebaseio.com', my_secret_token )
+ref = Basilisk::Load.new( 'https://bozo.firebaseio.com', my_secret_token )
 ref.set( tmp: { a: 0, b: 1 } )
 ref.set_rules( 
   { '.read' => true, '.write' => false, 
@@ -298,7 +298,7 @@ ref.set_rules(
   }
 )
 res = ref.child(:tmp).read # => { a: 0, b: 1 }
-ref.set( tmp: {d:0} ) } # => Basilik::Action::PermissionDeniedError
+ref.set( tmp: {d:0} ) } # => Basilisk::Action::PermissionDeniedError
 ```
 
 ## Contact
@@ -311,7 +311,7 @@ Fernand Galiana
 
 ## License
 
-Basilik is released under the [MIT](http://opensource.org/licenses/MIT) license.
+Basilisk is released under the [MIT](http://opensource.org/licenses/MIT) license.
 
 
 ## History

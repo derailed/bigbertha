@@ -1,9 +1,9 @@
-require 'basilik/ref'
+require 'basilisk/ref'
 
-module Basilik
+module Basilisk
   class Load
-    include Basilik::Ref
-    include Basilik::Action
+    include Basilisk::Ref
+    include Basilisk::Action
     
     attr_reader :url, :uri
     

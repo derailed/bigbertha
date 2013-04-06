@@ -2,7 +2,7 @@ require 'json'
 require 'typhoeus'
 require 'map'
 
-module Basilik  
+module Basilisk  
   LIBPATH      = ::File.expand_path(::File.dirname(__FILE__)) + ::File::SEPARATOR
   PATH         = ::File.dirname(LIBPATH) + ::File::SEPARATOR  
   
@@ -14,4 +14,4 @@ module Basilik
   end  
 end
 
-Basilik.require_all_libs_relative_to File.expand_path( "basilik", Basilik::LIBPATH )
+Basilisk.require_all_libs_relative_to File.expand_path( "basilisk", Basilisk::LIBPATH )

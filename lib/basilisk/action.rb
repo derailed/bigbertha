@@ -1,8 +1,8 @@
-require 'basilik/faults'
+require 'basilisk/faults'
 
-module Basilik
+module Basilisk
   module Action    
-    include Basilik::Faults
+    include Basilisk::Faults
     
     def read
       location = json_url
@@ -65,7 +65,7 @@ module Basilik
       end
       resp = Typhoeus.post( location, gen_opts( opts ) )
       res = handle_response( resp, location )
-      Basilik::Load.new( uri.to_s + '/' + res.name )
+      Basilisk::Load.new( uri.to_s + '/' + res.name )
     end
   
     def set_priority( priority )

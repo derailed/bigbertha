@@ -1,0 +1,1 @@
+Basilisk.require_all_libs_relative_to File.expand_path( File.join( %w(basilisk core_ext), Basilisk::LIBPATH ) )

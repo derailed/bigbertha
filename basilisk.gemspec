@@ -1,10 +1,10 @@
 # -*- encoding: utf-8 -*-
 $:.push File.expand_path("../lib", __FILE__)
-require "basilik/version"
+require "basilisk/version"
 
 Gem::Specification.new do |s|
-  s.name        = "basilik"
-  s.version     = Basilik::VERSION
+  s.name        = "basilisk"
+  s.version     = Basilisk::VERSION
   s.platform    = Gem::Platform::RUBY
 
   s.authors     = [
@@ -12,11 +12,11 @@ Gem::Specification.new do |s|
   ]
 
   s.email             = ["fernand.galiana@gmail.com"]
-  s.homepage          = "https://github.com/derailed/basilik"
+  s.homepage          = "https://github.com/derailed/basilisk"
   s.summary           = %q{Ruby implementation for your Firebase batteries}
   s.description       = "Firebase is a real time backend to allow clients to share" +
                         "data on the web. This gem provides a ruby API implementation."
-  s.rubyforge_project = "basilik"
+  s.rubyforge_project = "basilisk"
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {spec}/*`.split("\n")

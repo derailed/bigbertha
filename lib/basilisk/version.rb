@@ -1,3 +1,3 @@
-module Basilik
+module Basilisk
   VERSION = "0.0.2"
 end
