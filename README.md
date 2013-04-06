@@ -195,9 +195,9 @@ Yields:
 + a
   + a_1:"BumbleBee Tuna"
   + a_2
-    + a_2_1: 10.5
-    + a_2_2: "You bet!"
-    + a_3
+      + a_2_1: 10.5
+      + a_2_2: "You bet!"
+  + a_3
       + a_3_1: "You better!"
       
 Note: the last call inserts a branch new node in the hierarchy. We could have use set here as well to
