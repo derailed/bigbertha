@@ -1,7 +1,7 @@
-require 'firewater/ref'
+require 'basilik/ref'
 
 module Basilik
-  class Root
+  class Load
     include Basilik::Ref
     include Basilik::Action
     

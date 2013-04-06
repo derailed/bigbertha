@@ -1,9 +1,9 @@
 # -*- encoding: utf-8 -*-
 $:.push File.expand_path("../lib", __FILE__)
-require "firewater/version"
+require "basilik/version"
 
 Gem::Specification.new do |s|
-  s.name        = "firewater"
+  s.name        = "basilik"
   s.version     = Basilik::VERSION
   s.platform    = Gem::Platform::RUBY
 
@@ -12,9 +12,9 @@ Gem::Specification.new do |s|
   ]
 
   s.email             = ["fernand.galiana@gmail.com"]
-  s.homepage          = "https://github.com/derailed/firewater"
-  s.summary           = %q{Ruby implementation of Root framework}
-  s.description       = %q{Ruby implementation of Root framework}
+  s.homepage          = "https://github.com/derailed/basilik"
+  s.summary           = %q{Ruby implementation of Firebase framework}
+  s.description       = %q{Ruby implementation of Firebase framework}
   s.rubyforge_project = "firebase"
 
   s.files         = `git ls-files`.split("\n")

@@ -14,4 +14,4 @@ module Basilik
   end  
 end
 
-Basilik.require_all_libs_relative_to File.expand_path( "firewater", Basilik::LIBPATH )
+Basilik.require_all_libs_relative_to File.expand_path( "basilik", Basilik::LIBPATH )

@@ -1,4 +1,4 @@
-require 'firewater'
+require 'basilik'
 require 'simplecov'
 
 if ENV['COV']

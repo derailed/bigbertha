@@ -1,5 +1,5 @@
 module Basilik
-  module Errors
+  module Faults
     class NoDataError           < RuntimeError; end
     class InvalidRequestError   < RuntimeError; end
     class InvalidJSONError      < RuntimeError; end

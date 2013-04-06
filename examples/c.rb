@@ -1,6 +1,6 @@
-require 'firewater'
+require 'basilik'
 
-ref = Basilik::Root.new( 'https://firewater-test.firebaseio.com' )
+ref = Basilik::Load.new( ENV['fb_url'] )
 ref.remove
 ref.push( "Bumblebee" )
 ref.push( "Tuna" )

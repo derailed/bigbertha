@@ -12,7 +12,7 @@ module Basilik
     
     def root
       return self if root?
-      Basilik::Root.new( @uri.scheme + '://' + @uri.host )            
+      Basilik::Load.new( @uri.scheme + '://' + @uri.host )            
     end
     
     def root?
@@ -22,11 +22,11 @@ module Basilik
     def parent
       return nil if root?
       path = parse_path[0..-2].join( "/" )
-      Basilik::Root.new( root.uri.merge(path).to_s )
+      Basilik::Load.new( root.uri.merge(path).to_s )
     end
     
     def child( child_path )
-      Basilik::Root.new( "#{uri.to_s}/#{child_path}" )
+      Basilik::Load.new( "#{uri.to_s}/#{child_path}" )
     end
       
     def child?( child_path )

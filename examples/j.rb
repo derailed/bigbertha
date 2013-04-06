@@ -1,7 +1,7 @@
-require 'firewater'
+require 'basilik'
 require 'yaml'
 
-ref = Basilik::Root.new( 'https://firewater-test.firebaseio.com' )
+ref = Basilik::Load.new( ENV['fb_url'] )
 ref.remove
 a_ref = ref.push( {a:1, b:2} )
 b_ref = ref.push( {c:1, d:2} )
