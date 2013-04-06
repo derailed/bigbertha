@@ -13,9 +13,10 @@ Gem::Specification.new do |s|
 
   s.email             = ["fernand.galiana@gmail.com"]
   s.homepage          = "https://github.com/derailed/basilik"
-  s.summary           = %q{Ruby implementation of Firebase framework}
-  s.description       = %q{Ruby implementation of Firebase framework}
-  s.rubyforge_project = "firebase"
+  s.summary           = %q{Ruby implementation for your Firebase batteries}
+  s.description       = "Firebase is a real time backend to allow clients to share" +
+                        "data on the web. This gem provides a ruby API implementation."
+  s.rubyforge_project = "basilik"
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {spec}/*`.split("\n")
