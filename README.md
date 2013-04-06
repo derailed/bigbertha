@@ -2,8 +2,8 @@
 
 Firebase is a real-time backend that allows one to store key-value pairs in a hierarchical fashion, without
 having to manage additional servers. Firebase offers api's for a variety of client libs such as javascript, 
-REST, IOS and now Ruby ;-). A cool thing about Firebase is that it broadcast changes to a variety of clients listening
-on a given firebase and allows disparate client to share their data. Checkout http://firebase.com for the firehose...
+REST, IOS and now Ruby ;-). A cool feature of firebase is that it allows disparate clients to broadcast updates and
+sync up across the wire. Checkout http://firebase.com for the firehose...
 
 ## Requirements
 
