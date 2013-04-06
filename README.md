@@ -1,10 +1,9 @@
-# Basilik - Additional firepower to your Firebase batteries
+# Basilik - Ruby firepower to your Firebase batteries
 
 Firebase is a real-time backend that allows one to store key-value pairs in a hierarchical fashion, without
 having to manage additional servers. Firebase offers api's for a variety of client libs such as javascript, 
-REST, IOS and now Ruby ;-). Mechanisms are in place to automatically broadcast updates to the various client sharing 
-a firebase. Pretty cool feature for application needing the share data across a variety of platforms.
-Get the firehose from http://firebase.com
+REST, IOS and now Ruby ;-). A cool thing about Firebase is that it broadcast changes to a variety of clients listening
+on a given firebase and allows disparate client to share their data. Checkout http://firebase.com for the firehose...
 
 ## Requirements
 
@@ -21,18 +20,18 @@ $ gem install basilik
 ### Setup your Firebase
 
 Sign up for a firebase account and create a new firebase of your liking.
-In the following code sample we will use the following as our base url:
+In the following code samples, we will use the following as our base url:
 
-+ https://bozo.firebaseio.com
++ https://zerodarkthirty.firebaseio.com
 
 Then you can specify an entry point into the data using the following call:
 
 ```ruby
-ref = Basilik::Load.new( 'https://bozo.firebaseio.com' )
+ref = Basilik::Load.new( 'https://zerodarkthirty.firebaseio.com' )
 ```
 
 NOTE: You don't have to start a the root, but usually a good idea since this api
-offers ways to traverse the hierarchy up or down. More on this later...
+offers ways to traverse the hierarchy up or down. But more on this later...
 
 
 ### Populating firebase
@@ -94,7 +93,7 @@ Yields:
 
 #### Adding arrays (ordered data)
 
-The preferred method to construct list in your firebase is to use the push operation, which
+The preferred method to construct lists in your firebase is to use the push operation, which
 will automatically provide ordering to your list.
 
 ```ruby
@@ -159,8 +158,8 @@ ref.set( data )
 ref.child( 'a/a_2' ).read # => 10.5
 a_val = ref.child( :a ).read 
 a_val.a_1    # => 'Hello World'
+a_val[:a_1]  # => 'Hello World' or use hash indexing...
 a_val.a_2    # => 10.5
-a_val[:a_1]  # => 'Hello World'
 ```
 
 ### Updating data
@@ -188,7 +187,7 @@ ref.set( data )
 ```ruby
 ref.child( :a ).update( a_1:"BumbleBee Tuna" )
 ref.child( 'a/a_2' ).update( a_2_2:"You bet!" )
-ref.child( 'a/a_3' ).update( a_3_1:"You better!" )
+ref.child( 'a' ).child( 'a_3' ).update( a_3_1:"You better!" )
 ```
 
 Yields:
@@ -206,7 +205,7 @@ perform the insert.
 
 You can leverage #inc/#dec to increment/decrement counter like data.
 
-IMPORTANT! Sadly Firebase currently does not offer transactions using their REST api hence there is
+IMPORTANT! Sadly Firebase currently does not offer transactions using their REST api, hence there is
 no guarantees about the atomicity of read/write operations ;-(
 
 ### Deleting data
@@ -237,7 +236,7 @@ NOTE: Calling remove on the root ref will delete the entire hierarchy.
 
 ### Traversing the data
 
-You can traverse the hierarchy using the #child or #parent. These calls are chainable!
+You can traverse the hierarchy using the #child or #parent. These calls can be chained.
 
 ```ruby
 data = {
@@ -261,9 +260,10 @@ a_2_2_ref = ref.child( 'a/a_2/a_2_2' )
 a_2_2_ref = ref.child( :a ).child( :a_2 ).child( :a_2_2 ) # or...
 a_2_2_ref.name #=> 'a_2_2'
 
-a_2_ref   = a_2_2_ref.parent
+a_2_ref = a_2_2_ref.parent
 a_2_ref.name   # => 'a_2'
-a_ref     = a_2_2_ref.parent.parent
+
+a_ref = a_2_2_ref.parent.parent
 a_ref.name     # => 'a'
 ```
       
