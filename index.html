@@ -1,0 +1,363 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Basilik by derailed</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+      <div id="header">
+        <nav>
+          <li class="fork"><a href="https://github.com/derailed/basilik">View On GitHub</a></li>
+          <li class="downloads"><a href="https://github.com/derailed/basilik/zipball/master">ZIP</a></li>
+          <li class="downloads"><a href="https://github.com/derailed/basilik/tarball/master">TAR</a></li>
+          <li class="title">DOWNLOADS</li>
+        </nav>
+      </div><!-- end header -->
+
+    <div class="wrapper">
+
+      <section>
+        <div id="title">
+          <h1>Basilik</h1>
+          <p>Ruby implementation for Firebase</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/derailed">derailed</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></span>
+        </div>
+
+        <h1>Basilik - Ruby firepower to your Firebase batteries</h1>
+
+<p>Firebase is a real-time backend that allows one to store key-value pairs in a hierarchical fashion, without
+having to manage additional servers. Firebase offers api's for a variety of client libs such as javascript, 
+REST, IOS and now Ruby ;-). A cool thing about Firebase is that it broadcast changes to a variety of clients listening
+on a given firebase and allows disparate client to share their data. Checkout <a href="http://firebase.com">http://firebase.com</a> for the firehose...</p>
+
+<h2>Requirements</h2>
+
+<ul>
+<li>Ruby &gt;= 1.9</li>
+<li>Map</li>
+<li>Typhoeus</li>
+</ul><h2>Getting Started</h2>
+
+<p>$ gem install basilik</p>
+
+<h2>Usage</h2>
+
+<h3>Setup your Firebase</h3>
+
+<p>Sign up for a firebase account and create a new firebase of your liking.
+In the following code samples, we will use the following as our base url:</p>
+
+<ul>
+<li><a href="https://zerodarkthirty.firebaseio.com">https://zerodarkthirty.firebaseio.com</a></li>
+</ul><p>Then you can specify an entry point into the data using the following call:</p>
+
+<div class="highlight"><pre><span class="n">ref</span> <span class="o">=</span> <span class="ss">Basilik</span><span class="p">:</span><span class="ss">:Load</span><span class="o">.</span><span class="n">new</span><span class="p">(</span> <span class="s1">'https://zerodarkthirty.firebaseio.com'</span> <span class="p">)</span>
+</pre></div>
+
+<p>NOTE: You don't have to start a the root, but usually a good idea since this api
+offers ways to traverse the hierarchy up or down. But more on this later...</p>
+
+<h3>Populating firebase</h3>
+
+<p>Firebase supports the following data types:</p>
+
+<ul>
+<li>String</li>
+<li>Number</li>
+<li>Boolean</li>
+<li>Array</li>
+<li>Hash</li>
+</ul><h4>Adding primitive types</h4>
+
+<div class="highlight"><pre><span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="ss">a</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="ss">b</span><span class="p">:</span> <span class="sx">%s(Hello World)</span><span class="p">,</span>
+  <span class="ss">c</span><span class="p">:</span> <span class="mi">10</span><span class="o">.</span><span class="mi">5</span>
+<span class="p">}</span>
+<span class="n">ref</span><span class="o">.</span><span class="n">set</span><span class="p">(</span> <span class="n">data</span> <span class="p">)</span>
+</pre></div>
+
+<p>Yields:</p>
+
+<ul>
+<li>a:0</li>
+<li>b:"Hello World"</li>
+<li>c:10.5</li>
+</ul><p>NOTE: Set is a destructive operation and will replace the previous content for the reference it is
+called from.</p>
+
+<p>Thus </p>
+
+<div class="highlight"><pre><span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="ss">a</span><span class="p">:</span> <span class="mi">0</span>
+<span class="p">}</span>
+<span class="n">ref</span><span class="o">.</span><span class="n">set</span><span class="p">(</span> <span class="n">data</span> <span class="p">)</span>
+</pre></div>
+
+<p>Yields</p>
+
+<ul>
+<li>a:0</li>
+</ul><p>Hence replacing the previously assigned content.</p>
+
+<h4>Adding arrays</h4>
+
+<div class="highlight"><pre><span class="n">ref</span><span class="o">.</span><span class="n">set</span><span class="p">(</span> <span class="sx">%w(Hello World)</span> <span class="p">)</span>
+</pre></div>
+
+<p>Yields:</p>
+
+<ul>
+<li>0:"Hello"</li>
+<li>1:"World"</li>
+</ul><h4>Adding arrays (ordered data)</h4>
+
+<p>The preferred method to construct lists in your firebase is to use the push operation, which
+will automatically provide ordering to your list.</p>
+
+<div class="highlight"><pre><span class="n">ref</span><span class="o">.</span><span class="n">push</span><span class="p">(</span> <span class="s2">"BumbleBee"</span> <span class="p">)</span>
+<span class="n">ref</span><span class="o">.</span><span class="n">push</span><span class="p">(</span> <span class="s2">"Tuna"</span> <span class="p">)</span>
+</pre></div>
+
+<p>Yields:</p>
+
+<ul>
+<li>-IrMr3Yp1mozVNzDePKy: "BumbleBee"</li>
+<li>-IrMr3cM6XjTpNebsYRh: "Tuna"</li>
+</ul><p>NOTE: The list indexes will be autogenerated by firebase to ensure correct ordering on retrieval.</p>
+
+<h4>Adding hashes</h4>
+
+<div class="highlight"><pre><span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="ss">a</span><span class="p">:</span> <span class="p">{</span>
+    <span class="n">a_1</span><span class="p">:</span> <span class="sx">%s(Hello World)</span><span class="p">,</span>    
+    <span class="n">a_2</span><span class="p">:</span> <span class="mi">10</span><span class="o">.</span><span class="mi">5</span>    
+  <span class="p">},</span>
+  <span class="ss">b</span><span class="p">:</span> <span class="p">{</span>
+    <span class="n">b_1</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="n">b_2</span><span class="p">:</span> <span class="kp">true</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="n">ref</span><span class="o">.</span><span class="n">set</span><span class="p">(</span> <span class="n">data</span> <span class="p">)</span>
+</pre></div>
+
+<p>Yields:</p>
+
+<ul>
+<li>a:
+
+<ul>
+<li>a_1:"Hello World"</li>
+<li>a_2_:10.5</li>
+</ul>
+</li>
+<li>b:
+
+<ul>
+<li>b_1:10</li>
+<li>b_2:true</li>
+</ul>
+</li>
+</ul><h3>Reading data</h3>
+
+<p>Fetching data in the hierarchy is done via the read operation.</p>
+
+<div class="highlight"><pre><span class="c1"># Setup...</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="ss">a</span><span class="p">:</span> <span class="p">{</span>
+    <span class="n">a_1</span><span class="p">:</span> <span class="sx">%s(Hello World)</span><span class="p">,</span>    
+    <span class="n">a_2</span><span class="p">:</span> <span class="mi">10</span><span class="o">.</span><span class="mi">5</span>    
+  <span class="p">},</span>
+  <span class="ss">b</span><span class="p">:</span> <span class="p">{</span>
+    <span class="n">b_1</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="n">b_2</span><span class="p">:</span> <span class="kp">true</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="n">ref</span><span class="o">.</span><span class="n">set</span><span class="p">(</span> <span class="n">data</span> <span class="p">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span class="n">ref</span><span class="o">.</span><span class="n">child</span><span class="p">(</span> <span class="s1">'a/a_2'</span> <span class="p">)</span><span class="o">.</span><span class="n">read</span> <span class="c1"># =&gt; 10.5</span>
+<span class="n">a_val</span> <span class="o">=</span> <span class="n">ref</span><span class="o">.</span><span class="n">child</span><span class="p">(</span> <span class="ss">:a</span> <span class="p">)</span><span class="o">.</span><span class="n">read</span> 
+<span class="n">a_val</span><span class="o">.</span><span class="n">a_1</span>    <span class="c1"># =&gt; 'Hello World'</span>
+<span class="n">a_val</span><span class="o">[</span><span class="ss">:a_1</span><span class="o">]</span>  <span class="c1"># =&gt; 'Hello World' or use hash indexing...</span>
+<span class="n">a_val</span><span class="o">.</span><span class="n">a_2</span>    <span class="c1"># =&gt; 10.5</span>
+</pre></div>
+
+<h3>Updating data</h3>
+
+<p>You can use the #update on a reference to modify nodes in the hierarchy</p>
+
+<div class="highlight"><pre><span class="c1"># Setup...</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="ss">a</span><span class="p">:</span> <span class="p">{</span>
+    <span class="n">a_1</span><span class="p">:</span> <span class="sx">%s(Hello World)</span><span class="p">,</span>    
+    <span class="n">a_2</span><span class="p">:</span> <span class="p">{</span>
+      <span class="n">a_2_1</span><span class="p">:</span> <span class="mi">10</span><span class="o">.</span><span class="mi">5</span><span class="p">,</span>
+      <span class="n">a_2_2</span><span class="p">:</span> <span class="s2">"Word!"</span>
+    <span class="p">}</span>   
+  <span class="p">},</span>
+  <span class="ss">b</span><span class="p">:</span> <span class="p">{</span>
+    <span class="n">b_1</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="n">b_2</span><span class="p">:</span> <span class="kp">true</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="n">ref</span><span class="o">.</span><span class="n">set</span><span class="p">(</span> <span class="n">data</span> <span class="p">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span class="n">ref</span><span class="o">.</span><span class="n">child</span><span class="p">(</span> <span class="ss">:a</span> <span class="p">)</span><span class="o">.</span><span class="n">update</span><span class="p">(</span> <span class="n">a_1</span><span class="ss">:"BumbleBee Tuna"</span> <span class="p">)</span>
+<span class="n">ref</span><span class="o">.</span><span class="n">child</span><span class="p">(</span> <span class="s1">'a/a_2'</span> <span class="p">)</span><span class="o">.</span><span class="n">update</span><span class="p">(</span> <span class="n">a_2_2</span><span class="ss">:"You bet!"</span> <span class="p">)</span>
+<span class="n">ref</span><span class="o">.</span><span class="n">child</span><span class="p">(</span> <span class="s1">'a'</span> <span class="p">)</span><span class="o">.</span><span class="n">child</span><span class="p">(</span> <span class="s1">'a_3'</span> <span class="p">)</span><span class="o">.</span><span class="n">update</span><span class="p">(</span> <span class="n">a_3_1</span><span class="ss">:"You better!"</span> <span class="p">)</span>
+</pre></div>
+
+<p>Yields:</p>
+
+<ul>
+<li>a
+
+<ul>
+<li>a_1:"BumbleBee Tuna"</li>
+<li>a_2</li>
+<li>a_2_1: 10.5</li>
+<li>a_2_2: "You bet!"</li>
+<li>a_3
+
+<ul>
+<li>a_3_1: "You better!"</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul><p>Note: the last call inserts a branch new node in the hierarchy. We could have use set here as well to
+perform the insert.</p>
+
+<p>You can leverage #inc/#dec to increment/decrement counter like data.</p>
+
+<p>IMPORTANT! Sadly Firebase currently does not offer transactions using their REST api, hence there is
+no guarantees about the atomicity of read/write operations ;-(</p>
+
+<h3>Deleting data</h3>
+
+<p>Use the #remove operation to delete nodes at any level in the hierarchy.</p>
+
+<div class="highlight"><pre><span class="c1"># Setup...</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="ss">a</span><span class="p">:</span> <span class="p">{</span>
+    <span class="n">a_1</span><span class="p">:</span> <span class="sx">%s(Hello World)</span><span class="p">,</span>    
+    <span class="n">a_2</span><span class="p">:</span> <span class="p">{</span>
+      <span class="n">a_2_1</span><span class="p">:</span> <span class="mi">10</span><span class="o">.</span><span class="mi">5</span><span class="p">,</span>
+      <span class="n">a_2_2</span><span class="p">:</span> <span class="s2">"Word!"</span>
+    <span class="p">}</span>   
+  <span class="p">},</span>
+  <span class="ss">b</span><span class="p">:</span> <span class="p">{</span>
+    <span class="n">b_1</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="n">b_2</span><span class="p">:</span> <span class="kp">true</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="n">ref</span><span class="o">.</span><span class="n">set</span><span class="p">(</span> <span class="n">data</span> <span class="p">)</span>
+<span class="n">ref</span><span class="o">.</span><span class="n">child</span><span class="p">(</span> <span class="s1">'a/a_2/a_2_2'</span> <span class="p">)</span><span class="o">.</span><span class="n">remove</span>
+<span class="n">ref</span><span class="o">.</span><span class="n">child</span><span class="p">(</span> <span class="ss">:b</span> <span class="p">)</span><span class="o">.</span><span class="n">remove</span>
+</pre></div>
+
+<p>NOTE: Calling remove on the root ref will delete the entire hierarchy.</p>
+
+<h3>Traversing the data</h3>
+
+<p>You can traverse the hierarchy using the #child or #parent. These calls can be chained.</p>
+
+<div class="highlight"><pre><span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="ss">a</span><span class="p">:</span> <span class="p">{</span>
+    <span class="n">a_1</span><span class="p">:</span> <span class="sx">%s(Hello World)</span><span class="p">,</span>    
+    <span class="n">a_2</span><span class="p">:</span> <span class="p">{</span>
+      <span class="n">a_2_1</span><span class="p">:</span> <span class="mi">10</span><span class="o">.</span><span class="mi">5</span><span class="p">,</span>
+      <span class="n">a_2_2</span><span class="p">:</span> <span class="s2">"Word!"</span>
+    <span class="p">}</span>   
+  <span class="p">},</span>
+  <span class="ss">b</span><span class="p">:</span> <span class="p">{</span>
+    <span class="n">b_1</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="n">b_2</span><span class="p">:</span> <span class="kp">true</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="n">ref</span><span class="o">.</span><span class="n">set</span><span class="p">(</span> <span class="n">data</span> <span class="p">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span class="n">a_2_2_ref</span> <span class="o">=</span> <span class="n">ref</span><span class="o">.</span><span class="n">child</span><span class="p">(</span> <span class="s1">'a/a_2/a_2_2'</span> <span class="p">)</span>
+<span class="n">a_2_2_ref</span> <span class="o">=</span> <span class="n">ref</span><span class="o">.</span><span class="n">child</span><span class="p">(</span> <span class="ss">:a</span> <span class="p">)</span><span class="o">.</span><span class="n">child</span><span class="p">(</span> <span class="ss">:a_2</span> <span class="p">)</span><span class="o">.</span><span class="n">child</span><span class="p">(</span> <span class="ss">:a_2_2</span> <span class="p">)</span> <span class="c1"># or...</span>
+<span class="n">a_2_2_ref</span><span class="o">.</span><span class="n">name</span> <span class="c1">#=&gt; 'a_2_2'</span>
+
+<span class="n">a_2_ref</span> <span class="o">=</span> <span class="n">a_2_2_ref</span><span class="o">.</span><span class="n">parent</span>
+<span class="n">a_2_ref</span><span class="o">.</span><span class="n">name</span>   <span class="c1"># =&gt; 'a_2'</span>
+
+<span class="n">a_ref</span> <span class="o">=</span> <span class="n">a_2_2_ref</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span>
+<span class="n">a_ref</span><span class="o">.</span><span class="n">name</span>     <span class="c1"># =&gt; 'a'</span>
+</pre></div>
+
+<h3>Priorities</h3>
+
+<p>Firebase provides for setting priorities on ordered list in order to affect the retrieval. By default priority is null.
+Setting priority affects the retrieval as follows (See firebase web site for details!):</p>
+
+<ul>
+<li>Children with no priority are retrieved first ordered lex asc by name</li>
+<li>Children with number priority are next, ordered lex asc priority, name</li>
+<li>Children with a non numeric priority come last, ordered lex asc priority, name</li>
+</ul><div class="highlight"><pre><span class="n">a_ref</span> <span class="o">=</span> <span class="n">ref</span><span class="o">.</span><span class="n">push</span><span class="p">(</span> <span class="p">{</span><span class="ss">a</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="ss">b</span><span class="p">:</span><span class="mi">2</span><span class="p">}</span> <span class="p">)</span>
+<span class="n">b_ref</span> <span class="o">=</span> <span class="n">ref</span><span class="o">.</span><span class="n">push</span><span class="p">(</span> <span class="p">{</span><span class="ss">c</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="ss">d</span><span class="p">:</span><span class="mi">2</span><span class="p">}</span> <span class="p">)</span>
+<span class="n">a_ref</span><span class="o">.</span><span class="n">set_priority</span><span class="p">(</span> <span class="mi">20</span> <span class="p">)</span>
+<span class="n">b_ref</span><span class="o">.</span><span class="n">set_priority</span><span class="p">(</span> <span class="mi">10</span> <span class="p">)</span> 
+<span class="n">a_ref</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">read</span> <span class="c1">#=&gt; {-IrNhTASqxqEpNMw8NGq: {c: 1, d: 2}, -IrNhT2vsoQ1WlgSG6op: {a: 1, b: 2} }</span>
+</pre></div>
+
+<h3>Auth and rules</h3>
+
+<p>You can secure you firebase store using a secret token and grant access for permissions on the store using rules.
+Please refer to the firebase docs for details.</p>
+
+<div class="highlight"><pre><span class="n">ref</span> <span class="o">=</span> <span class="ss">Basilik</span><span class="p">:</span><span class="ss">:Load</span><span class="o">.</span><span class="n">new</span><span class="p">(</span> <span class="s1">'https://bozo.firebaseio.com'</span><span class="p">,</span> <span class="n">my_secret_token</span> <span class="p">)</span>
+<span class="n">ref</span><span class="o">.</span><span class="n">set</span><span class="p">(</span> <span class="ss">tmp</span><span class="p">:</span> <span class="p">{</span> <span class="ss">a</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="ss">b</span><span class="p">:</span> <span class="mi">1</span> <span class="p">}</span> <span class="p">)</span>
+<span class="n">ref</span><span class="o">.</span><span class="n">set_rules</span><span class="p">(</span> 
+  <span class="p">{</span> <span class="s1">'.read'</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">,</span> <span class="s1">'.write'</span> <span class="o">=&gt;</span> <span class="kp">false</span><span class="p">,</span> 
+     <span class="s2">"tmp"</span>  <span class="o">=&gt;</span> <span class="p">{</span> <span class="s1">'.read'</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">,</span> <span class="s1">'.write'</span> <span class="o">=&gt;</span> <span class="kp">false</span> <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">)</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">ref</span><span class="o">.</span><span class="n">child</span><span class="p">(</span><span class="ss">:tmp</span><span class="p">)</span><span class="o">.</span><span class="n">read</span> <span class="c1"># =&gt; { a: 0, b: 1 }</span>
+<span class="n">ref</span><span class="o">.</span><span class="n">set</span><span class="p">(</span> <span class="ss">tmp</span><span class="p">:</span> <span class="p">{</span><span class="ss">d</span><span class="p">:</span><span class="mi">0</span><span class="p">}</span> <span class="p">)</span> <span class="p">}</span> <span class="c1"># =&gt; Basilik::Action::PermissionDeniedError</span>
+</pre></div>
+
+<h2>Contact</h2>
+
+<p>Fernand Galiana</p>
+
+<ul>
+<li><a href="http://github.com/derailed">http://github.com/derailed</a></li>
+<li><a href="http://twitter.com/kitesurfer">http://twitter.com/kitesurfer</a></li>
+<li><a href="mailto:fernand.galiana@gmail.com">fernand.galiana@gmail.com</a></li>
+</ul><h2>License</h2>
+
+<p>Basilik is released under the <a href="http://opensource.org/licenses/MIT">MIT</a> license.</p>
+
+<h2>History</h2>
+
+<p>0.0.1:
+    - Initial drop</p>
+      </section>
+
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
