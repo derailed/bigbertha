@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Basilik by derailed</title>
+    <title>Basilisk by derailed</title>
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
@@ -31,14 +31,14 @@
 
       <section>
         <div id="title">
-          <h1>Basilik</h1>
+          <h1>Basilisk</h1>
           <p>Ruby implementation for Firebase</p>
           <hr>
           <span class="credits left">Project maintained by <a href="https://github.com/derailed">derailed</a></span>
           <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></span>
         </div>
 
-        <h1>Basilik - Ruby firepower to your Firebase batteries</h1>
+        <h1>Basilisk - Ruby firepower to your Firebase batteries</h1>
 
 <p>Firebase is a real-time backend that allows one to store key-value pairs in a hierarchical fashion, without
 having to manage additional servers. Firebase offers api's for a variety of client libs such as javascript, 
@@ -53,7 +53,7 @@ on a given firebase and allows disparate client to share their data. Checkout <a
 <li>Typhoeus</li>
 </ul><h2>Getting Started</h2>
 
-<p>$ gem install basilik</p>
+<p>$ gem install basilisk</p>
 
 <h2>Usage</h2>
 
@@ -66,7 +66,7 @@ In the following code samples, we will use the following as our base url:</p>
 <li><a href="https://zerodarkthirty.firebaseio.com">https://zerodarkthirty.firebaseio.com</a></li>
 </ul><p>Then you can specify an entry point into the data using the following call:</p>
 
-<div class="highlight"><pre><span class="n">ref</span> <span class="o">=</span> <span class="ss">Basilik</span><span class="p">:</span><span class="ss">:Load</span><span class="o">.</span><span class="n">new</span><span class="p">(</span> <span class="s1">'https://zerodarkthirty.firebaseio.com'</span> <span class="p">)</span>
+<div class="highlight"><pre><span class="n">ref</span> <span class="o">=</span> <span class="ss">Basilisk</span><span class="p">:</span><span class="ss">:Load</span><span class="o">.</span><span class="n">new</span><span class="p">(</span> <span class="s1">'https://zerodarkthirty.firebaseio.com'</span> <span class="p">)</span>
 </pre></div>
 
 <p>NOTE: You don't have to start a the root, but usually a good idea since this api
@@ -327,7 +327,7 @@ Setting priority affects the retrieval as follows (See firebase web site for det
 <p>You can secure you firebase store using a secret token and grant access for permissions on the store using rules.
 Please refer to the firebase docs for details.</p>
 
-<div class="highlight"><pre><span class="n">ref</span> <span class="o">=</span> <span class="ss">Basilik</span><span class="p">:</span><span class="ss">:Load</span><span class="o">.</span><span class="n">new</span><span class="p">(</span> <span class="s1">'https://bozo.firebaseio.com'</span><span class="p">,</span> <span class="n">my_secret_token</span> <span class="p">)</span>
+<div class="highlight"><pre><span class="n">ref</span> <span class="o">=</span> <span class="ss">Basilisk</span><span class="p">:</span><span class="ss">:Load</span><span class="o">.</span><span class="n">new</span><span class="p">(</span> <span class="s1">'https://bozo.firebaseio.com'</span><span class="p">,</span> <span class="n">my_secret_token</span> <span class="p">)</span>
 <span class="n">ref</span><span class="o">.</span><span class="n">set</span><span class="p">(</span> <span class="ss">tmp</span><span class="p">:</span> <span class="p">{</span> <span class="ss">a</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="ss">b</span><span class="p">:</span> <span class="mi">1</span> <span class="p">}</span> <span class="p">)</span>
 <span class="n">ref</span><span class="o">.</span><span class="n">set_rules</span><span class="p">(</span> 
   <span class="p">{</span> <span class="s1">'.read'</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">,</span> <span class="s1">'.write'</span> <span class="o">=&gt;</span> <span class="kp">false</span><span class="p">,</span> 
@@ -335,7 +335,7 @@ Please refer to the firebase docs for details.</p>
   <span class="p">}</span>
 <span class="p">)</span>
 <span class="n">res</span> <span class="o">=</span> <span class="n">ref</span><span class="o">.</span><span class="n">child</span><span class="p">(</span><span class="ss">:tmp</span><span class="p">)</span><span class="o">.</span><span class="n">read</span> <span class="c1"># =&gt; { a: 0, b: 1 }</span>
-<span class="n">ref</span><span class="o">.</span><span class="n">set</span><span class="p">(</span> <span class="ss">tmp</span><span class="p">:</span> <span class="p">{</span><span class="ss">d</span><span class="p">:</span><span class="mi">0</span><span class="p">}</span> <span class="p">)</span> <span class="p">}</span> <span class="c1"># =&gt; Basilik::Action::PermissionDeniedError</span>
+<span class="n">ref</span><span class="o">.</span><span class="n">set</span><span class="p">(</span> <span class="ss">tmp</span><span class="p">:</span> <span class="p">{</span><span class="ss">d</span><span class="p">:</span><span class="mi">0</span><span class="p">}</span> <span class="p">)</span> <span class="p">}</span> <span class="c1"># =&gt; Basilisk::Action::PermissionDeniedError</span>
 </pre></div>
 
 <h2>Contact</h2>
@@ -348,7 +348,7 @@ Please refer to the firebase docs for details.</p>
 <li><a href="mailto:fernand.galiana@gmail.com">fernand.galiana@gmail.com</a></li>
 </ul><h2>License</h2>
 
-<p>Basilik is released under the <a href="http://opensource.org/licenses/MIT">MIT</a> license.</p>
+<p>Basilisk is released under the <a href="http://opensource.org/licenses/MIT">MIT</a> license.</p>
 
 <h2>History</h2>
 

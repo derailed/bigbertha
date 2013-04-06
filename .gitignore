@@ -1,4 +1,5 @@
 aa.txt
+.autotest
 coverage
 pkg
 *.sh
