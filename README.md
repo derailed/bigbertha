@@ -5,6 +5,7 @@ having to manage additional servers. Firebase offers api's for a variety of clie
 REST, IOS and now Ruby ;-). A cool feature of firebase is that it allows disparate clients to broadcast updates and
 sync up across the wire. Checkout http://firebase.com for the firehose...
 
+
 ## Requirements
 
 - Ruby >= 1.9
