@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   ]
 
   s.email             = ["fernand.galiana@gmail.com"]
-  s.homepage          = "https://github.com/derailed/bigbertha"
+  s.homepage          = "http://derailed.github.io/bigbertha"
   s.summary           = %q{Ruby implementation for your Firebase battery}
   s.description       = "Firebase is a real time backend to allow clients to share" +
                         "data on the web. This gem provides a ruby API implementation."
