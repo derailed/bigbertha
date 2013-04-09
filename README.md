@@ -11,6 +11,7 @@ sync up across the wire. Checkout http://firebase.com for the firehose...
 - Ruby >= 1.9
 - Map
 - Typhoeus
+- Values
 
 ## Getting Started
 
@@ -320,3 +321,5 @@ Bigbertha is released under the [MIT](http://opensource.org/licenses/MIT) licens
     + Initial drop
   + 0.0.2:
     + Clean up and doc updates
+  + 0.0.3:
+    + Updated gemspec

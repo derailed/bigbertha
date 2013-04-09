@@ -25,4 +25,5 @@ Gem::Specification.new do |s|
   
   s.add_dependency 'map'     , '~> 6.3.0'
   s.add_dependency 'typhoeus', '~> 0.6.2'
+  s.add_dependency 'values'  , '~> 1.5.0'
 end
