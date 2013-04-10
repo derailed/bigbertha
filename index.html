@@ -38,7 +38,8 @@
           <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></span>
         </div>
 
-        <p>Firebase is a real-time backend that allows one to store key-value pairs in a hierarchical fashion, without having to manage additional servers. Firebase offers api's for a variety of client libs such as javascript, REST, IOS and now Ruby ;-). A cool feature of firebase is that it allows disparate clients to broadcast updates and sync up across the wire. Checkout <a href="http://firebase.com">http://firebase.com</a> for the firehose...</p>
+        <p>Firebase is a real-time backend that allows one to store key-value pairs in a hierarchical fashion, without
+having to manage additional servers. Firebase offers api's for a variety of client libs such as javascript, REST, IOS and now Ruby ;-). A cool feature of firebase is that it allows disparate clients to broadcast updates and sync up across the wire. Checkout <a href="http://firebase.com">http://firebase.com</a> for the firehose...</p>
 
 <h2>Requirements</h2>
 
@@ -46,6 +47,8 @@
 <li>Ruby &gt;= 1.9</li>
 <li>Map</li>
 <li>Typhoeus</li>
+<li>Values</li>
+<li>firebase_token_generator</li>
 </ul><h2>Getting Started</h2>
 
 <p>$ gem install bigbertha</p>
@@ -61,7 +64,7 @@ In the following code samples, we will use the following as our base url:</p>
 <li><a href="https://zerodarkthirty.firebaseio.com">https://zerodarkthirty.firebaseio.com</a></li>
 </ul><p>Then you can specify an entry point into the data using the following call:</p>
 
-<div class="highlight"><pre><span class="n">ref</span> <span class="o">=</span> <span class="ss">Bigbertha</span><span class="p">:</span><span class="ss">:Load</span><span class="o">.</span><span class="n">new</span><span class="p">(</span> <span class="s1">'https://zerodarkthirty.firebaseio.com'</span> <span class="p">)</span>
+<div class="highlight"><pre><span class="n">ref</span> <span class="o">=</span> <span class="ss">Bigbertha</span><span class="p">:</span><span class="ss">:Ref</span><span class="o">.</span><span class="n">new</span><span class="p">(</span> <span class="s1">'https://zerodarkthirty.firebaseio.com'</span> <span class="p">)</span>
 </pre></div>
 
 <p>NOTE: You don't have to start a the root, but usually a good idea since this api
@@ -186,7 +189,9 @@ will automatically provide ordering to your list.</p>
 <span class="n">ref</span><span class="o">.</span><span class="n">set</span><span class="p">(</span> <span class="n">data</span> <span class="p">)</span>
 </pre></div>
 
-<div class="highlight"><pre><span class="n">ref</span><span class="o">.</span><span class="n">child</span><span class="p">(</span> <span class="s1">'a/a_2'</span> <span class="p">)</span><span class="o">.</span><span class="n">read</span> <span class="c1"># =&gt; 10.5</span>
+<div class="highlight"><pre><span class="n">ref</span><span class="o">.</span><span class="n">child</span><span class="p">(</span> <span class="ss">:a</span><span class="p">,</span> <span class="ss">:a_2</span> <span class="p">)</span><span class="o">.</span><span class="n">read</span> <span class="c1"># =&gt; 10.5</span>
+<span class="c1"># or...</span>
+<span class="n">ref</span><span class="o">.</span><span class="n">child</span><span class="p">(</span> <span class="ss">:a</span><span class="p">,</span> <span class="ss">:a_2</span> <span class="p">)</span><span class="o">.</span><span class="n">val</span>  <span class="c1"># =&gt; 10.5</span>
 <span class="n">a_val</span> <span class="o">=</span> <span class="n">ref</span><span class="o">.</span><span class="n">child</span><span class="p">(</span> <span class="ss">:a</span> <span class="p">)</span><span class="o">.</span><span class="n">read</span> 
 <span class="n">a_val</span><span class="o">.</span><span class="n">a_1</span>    <span class="c1"># =&gt; 'Hello World'</span>
 <span class="n">a_val</span><span class="o">[</span><span class="ss">:a_1</span><span class="o">]</span>  <span class="c1"># =&gt; 'Hello World' or use hash indexing...</span>
@@ -295,7 +300,12 @@ no guarantees about the atomicity of read/write operations ;-(</p>
 </pre></div>
 
 <div class="highlight"><pre><span class="n">a_2_2_ref</span> <span class="o">=</span> <span class="n">ref</span><span class="o">.</span><span class="n">child</span><span class="p">(</span> <span class="s1">'a/a_2/a_2_2'</span> <span class="p">)</span>
-<span class="n">a_2_2_ref</span> <span class="o">=</span> <span class="n">ref</span><span class="o">.</span><span class="n">child</span><span class="p">(</span> <span class="ss">:a</span> <span class="p">)</span><span class="o">.</span><span class="n">child</span><span class="p">(</span> <span class="ss">:a_2</span> <span class="p">)</span><span class="o">.</span><span class="n">child</span><span class="p">(</span> <span class="ss">:a_2_2</span> <span class="p">)</span> <span class="c1"># or...</span>
+<span class="c1"># or...</span>
+<span class="n">a_2_2_ref</span> <span class="o">=</span> <span class="n">ref</span><span class="o">.</span><span class="n">child</span><span class="p">(</span> <span class="ss">:a</span> <span class="p">)</span><span class="o">.</span><span class="n">child</span><span class="p">(</span> <span class="ss">:a_2</span> <span class="p">)</span><span class="o">.</span><span class="n">child</span><span class="p">(</span> <span class="ss">:a_2_2</span> <span class="p">)</span> 
+<span class="c1"># or...</span>
+<span class="n">a_2_2_ref</span> <span class="o">=</span> <span class="n">ref</span><span class="o">.</span><span class="n">child</span><span class="p">(</span> <span class="ss">:a</span><span class="p">,</span> <span class="ss">:a_2</span><span class="p">,</span> <span class="ss">:a_2_2</span> <span class="p">)</span>
+<span class="c1"># or...</span>
+<span class="n">a_2_2_ref</span> <span class="o">=</span> <span class="n">ref</span><span class="o">.</span><span class="n">child</span><span class="p">(</span> <span class="sx">%w(a a_2 a_2_2)</span> <span class="p">)</span>
 <span class="n">a_2_2_ref</span><span class="o">.</span><span class="n">name</span> <span class="c1">#=&gt; 'a_2_2'</span>
 
 <span class="n">a_2_ref</span> <span class="o">=</span> <span class="n">a_2_2_ref</span><span class="o">.</span><span class="n">parent</span>
@@ -326,11 +336,23 @@ Setting priority affects the retrieval as follows (See firebase web site for det
 <p>You can secure you firebase store using a secret token and grant access for permissions on the store using rules.
 Please refer to the firebase docs for details.</p>
 
-<div class="highlight"><pre><span class="n">ref</span> <span class="o">=</span> <span class="ss">Bigbertha</span><span class="p">:</span><span class="ss">:Load</span><span class="o">.</span><span class="n">new</span><span class="p">(</span> <span class="s1">'https://bozo.firebaseio.com'</span><span class="p">,</span> <span class="n">my_secret_token</span> <span class="p">)</span>
+<p>Note: We've encapsulated the Firebase auth token generator ruby implementation to make generating tokens
+more convenient. </p>
+
+<pre><code>&gt; bb_auth_token -h
+&gt; bb_auth_token SECRET --data "{\"user\":\"bozo\"}"
+</code></pre>
+
+<div class="highlight"><pre><span class="n">ref</span> <span class="o">=</span> <span class="ss">Bigbertha</span><span class="p">:</span><span class="ss">:Ref</span><span class="o">.</span><span class="n">new</span><span class="p">(</span> <span class="s1">'https://bozo.firebaseio.com'</span><span class="p">,</span> <span class="n">auth_token</span><span class="o">|</span><span class="n">secret</span> <span class="p">)</span>
 <span class="n">ref</span><span class="o">.</span><span class="n">set</span><span class="p">(</span> <span class="ss">tmp</span><span class="p">:</span> <span class="p">{</span> <span class="ss">a</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="ss">b</span><span class="p">:</span> <span class="mi">1</span> <span class="p">}</span> <span class="p">)</span>
 <span class="n">ref</span><span class="o">.</span><span class="n">set_rules</span><span class="p">(</span> 
-  <span class="p">{</span> <span class="s1">'.read'</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">,</span> <span class="s1">'.write'</span> <span class="o">=&gt;</span> <span class="kp">false</span><span class="p">,</span> 
-     <span class="s2">"tmp"</span>  <span class="o">=&gt;</span> <span class="p">{</span> <span class="s1">'.read'</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">,</span> <span class="s1">'.write'</span> <span class="o">=&gt;</span> <span class="kp">false</span> <span class="p">}</span>
+  <span class="p">{</span> 
+    <span class="s1">'.read'</span>  <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">,</span> 
+    <span class="s1">'.write'</span> <span class="o">=&gt;</span> <span class="s2">"auth.user == 'bozo'"</span><span class="p">,</span> 
+     <span class="s2">"tmp"</span>   <span class="o">=&gt;</span> <span class="p">{</span> 
+       <span class="s1">'.read'</span>  <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">,</span> 
+       <span class="s1">'.write'</span> <span class="o">=&gt;</span> <span class="kp">false</span> 
+     <span class="p">}</span>
   <span class="p">}</span>
 <span class="p">)</span>
 <span class="n">res</span> <span class="o">=</span> <span class="n">ref</span><span class="o">.</span><span class="n">child</span><span class="p">(</span><span class="ss">:tmp</span><span class="p">)</span><span class="o">.</span><span class="n">read</span> <span class="c1"># =&gt; { a: 0, b: 1 }</span>
@@ -345,7 +367,10 @@ Please refer to the firebase docs for details.</p>
 <li><a href="http://github.com/derailed">http://github.com/derailed</a></li>
 <li><a href="http://twitter.com/kitesurfer">http://twitter.com/kitesurfer</a></li>
 <li><a href="mailto:fernand.galiana@gmail.com">fernand.galiana@gmail.com</a></li>
-</ul><h2>License</h2>
+</ul><p>Still work in progress. So please feel free to contact me if you run into issues or
+just want to touch base...</p>
+
+<h2>License</h2>
 
 <p>Bigbertha is released under the <a href="http://opensource.org/licenses/MIT">MIT</a> license.</p>
 
@@ -362,6 +387,20 @@ Please refer to the firebase docs for details.</p>
 
 <ul>
 <li>Clean up and doc updates</li>
+</ul>
+</li>
+<li>0.0.3:
+
+<ul>
+<li>Updated gemspec</li>
+</ul>
+</li>
+<li>0.0.4:
+
+<ul>
+<li>Added command line exec bb_auth_token to generate auth tokens</li>
+<li>Added splat args to child</li>
+<li>Deprecated Load. Use Ref from now on</li>
 </ul>
 </li>
 </ul>
