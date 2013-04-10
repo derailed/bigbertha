@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Bigbertha::Ref do
   before :all do
-    @ref = Bigbertha::Load.new( ENV['fb_url'] )
+    @ref = Bigbertha::Ref.new( ENV['fb_url'] )
   end
   
   describe '#child?' do
@@ -35,7 +35,7 @@ describe Bigbertha::Ref do
   describe '#val' do
     it "retrieves simple value correctly" do
       @ref.set( a:1 )
-      @ref.child( :a ).val.to_i.should == 1
+      @ref.child( :a ).val.should == 1
     end
     
     it "retrieves complex values correctly" do
@@ -44,9 +44,32 @@ describe Bigbertha::Ref do
     end
   end
   
+  describe '#update' do
+    it "updates a value correctly" do
+      @ref.set( a:{b:{c:1, d:"hello"}} )
+      data = @ref.val
+      data.a.b.c = 2
+      data.a.b.d = "BumbleBee Tuna"
+      @ref.update( data )
+      @ref.val.a.b.c.should == 2
+      @ref.val.a.b.d.should == "BumbleBee Tuna"
+    end
+    
+    it "updates the data structure correctly" do
+      @ref.set( a:{b:{c:1, d:"hello"}} )
+      data = @ref.val
+      data.delete( :b )
+      data.a.b = {z:10}
+      @ref.update( data )
+      @ref.val.a.b.z.should == 10
+      lambda { @ref.val.a.b.c }.should raise_error NoMethodError
+    end
+    
+  end
+  
   describe '#child' do
     it "creates a child ref correctly" do
-      child_ref = @ref.child( 'fred')
+      child_ref = @ref.child( 'fred' )
       child_ref.name.should == 'fred'
       child_ref.parent.to_s.should == ENV['fb_url']
     end
@@ -56,6 +79,19 @@ describe Bigbertha::Ref do
       child_ref.name.should == 'duh'
       child_ref.parent.to_s.should == ENV['fb_url'] + '/fred/blee'
     end    
+    
+    it "handles array args correctly" do
+      child_ref = @ref.child( %w(fred blee duh) )
+      child_ref.name.should == 'duh'
+      child_ref.parent.to_s.should == ENV['fb_url'] + '/fred/blee'
+    end    
+
+    it "handles splat correctly" do
+      child_ref = @ref.child( :fred, :blee, :duh )
+      child_ref.name.should == 'duh'
+      child_ref.parent.to_s.should == ENV['fb_url'] + '/fred/blee'
+    end    
+    
   end
   
   describe '#name' do
@@ -64,7 +100,7 @@ describe Bigbertha::Ref do
     end
     
     it "identifies a url name correctly" do
-      ref = Bigbertha::Load.new( ENV['fb_url'] + '/fred/blee' )
+      ref = Bigbertha::Ref.new( ENV['fb_url'] + '/fred/blee' )
       ref.name.should == 'blee'
     end    
   end
@@ -75,7 +111,7 @@ describe Bigbertha::Ref do
     end    
 
     it "identifies non root url correctly" do
-      ref = Bigbertha::Load.new( ENV['fb_url'] + '/fred/blee' )
+      ref = Bigbertha::Ref.new( ENV['fb_url'] + '/fred/blee' )
       ref.root.to_s.should == ENV['fb_url']
     end        
   end
@@ -86,12 +122,12 @@ describe Bigbertha::Ref do
     end
     
     it "identifies / as root correctly" do
-      ref = Bigbertha::Load.new( ENV['fb_url'] + '/' )
+      ref = Bigbertha::Ref.new( ENV['fb_url'] + '/' )
       ref.should be_root
     end
     
     it "identifies non root correctly" do
-      ref = Bigbertha::Load.new( ENV['fb_url'] + '/fred' )
+      ref = Bigbertha::Ref.new( ENV['fb_url'] + '/fred' )
       ref.should_not be_root
     end
   end
@@ -102,7 +138,7 @@ describe Bigbertha::Ref do
     end
     
     it "identifies a parent correctly" do
-      ref = Bigbertha::Load.new( ENV['fb_url'] + '/fred/blee' )
+      ref = Bigbertha::Ref.new( ENV['fb_url'] + '/fred/blee' )
       ref.parent.to_s.should == ENV['fb_url'] + '/fred'
     end
   end

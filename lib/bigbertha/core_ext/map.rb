@@ -10,12 +10,12 @@ class Map
     res.each_pair do |k,v|
       if self[k]
         if other[k]
-          events << Event.new( Bigbertha::Load.evt_value, k ) 
+          events << Event.new( Bigbertha::Ref.evt_value, k ) 
         else
-          events << Event.new( Bigbertha::Load.evt_child_removed, k )
+          events << Event.new( Bigbertha::Ref.evt_child_removed, k )
         end
       else
-        events << Event.new( Bigbertha::Load.evt_child_added, k )
+        events << Event.new( Bigbertha::Ref.evt_child_added, k )
       end
     end
     events

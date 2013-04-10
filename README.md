@@ -12,6 +12,7 @@ sync up across the wire. Checkout http://firebase.com for the firehose...
 - Map
 - Typhoeus
 - Values
+- firebase_token_generator
 
 ## Getting Started
 
@@ -29,7 +30,7 @@ In the following code samples, we will use the following as our base url:
 Then you can specify an entry point into the data using the following call:
 
 ```ruby
-ref = Bigbertha::Load.new( 'https://zerodarkthirty.firebaseio.com' )
+ref = Bigbertha::Ref.new( 'https://zerodarkthirty.firebaseio.com' )
 ```
 
 NOTE: You don't have to start a the root, but usually a good idea since this api
@@ -157,7 +158,9 @@ ref.set( data )
 ```
 
 ```ruby
-ref.child( 'a/a_2' ).read # => 10.5
+ref.child( :a, :a_2 ).read # => 10.5
+# or...
+ref.child( :a, :a_2 ).val  # => 10.5
 a_val = ref.child( :a ).read 
 a_val.a_1    # => 'Hello World'
 a_val[:a_1]  # => 'Hello World' or use hash indexing...
@@ -259,7 +262,12 @@ ref.set( data )
 
 ```ruby
 a_2_2_ref = ref.child( 'a/a_2/a_2_2' )
-a_2_2_ref = ref.child( :a ).child( :a_2 ).child( :a_2_2 ) # or...
+# or...
+a_2_2_ref = ref.child( :a ).child( :a_2 ).child( :a_2_2 ) 
+# or...
+a_2_2_ref = ref.child( :a, :a_2, :a_2_2 )
+# or...
+a_2_2_ref = ref.child( %w(a a_2 a_2_2) )
 a_2_2_ref.name #=> 'a_2_2'
 
 a_2_ref = a_2_2_ref.parent
@@ -291,12 +299,25 @@ a_ref.parent.read #=> {-IrNhTASqxqEpNMw8NGq: {c: 1, d: 2}, -IrNhT2vsoQ1WlgSG6op:
 You can secure you firebase store using a secret token and grant access for permissions on the store using rules.
 Please refer to the firebase docs for details.
 
+Note: We've encapsulated the Firebase auth token generator ruby implementation to make generating tokens
+more convenient. 
+
+```
+> bb_auth_token -h
+> bb_auth_token SECRET --data "{\"user\":\"bozo\"}"
+```
+
 ```ruby
-ref = Bigbertha::Load.new( 'https://bozo.firebaseio.com', my_secret_token )
+ref = Bigbertha::Ref.new( 'https://bozo.firebaseio.com', auth_token|secret )
 ref.set( tmp: { a: 0, b: 1 } )
 ref.set_rules( 
-  { '.read' => true, '.write' => false, 
-     "tmp"  => { '.read' => true, '.write' => false }
+  { 
+    '.read'  => true, 
+    '.write' => "auth.user == 'bozo'", 
+     "tmp"   => { 
+       '.read'  => true, 
+       '.write' => false 
+     }
   }
 )
 res = ref.child(:tmp).read # => { a: 0, b: 1 }
@@ -311,6 +332,9 @@ Fernand Galiana
 - http://twitter.com/kitesurfer
 - <fernand.galiana@gmail.com>
 
+Still work in progress. So please feel free to contact me if you run into issues or
+just want to touch base...
+
 ## License
 
 Bigbertha is released under the [MIT](http://opensource.org/licenses/MIT) license.
@@ -323,3 +347,7 @@ Bigbertha is released under the [MIT](http://opensource.org/licenses/MIT) licens
     + Clean up and doc updates
   + 0.0.3:
     + Updated gemspec
+  + 0.0.4:
+    + Added command line exec bb_auth_token to generate auth tokens
+    + Added splat args to child
+    + Deprecated Load. Use Ref from now on

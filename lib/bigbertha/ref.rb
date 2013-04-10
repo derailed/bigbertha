@@ -1,18 +1,30 @@
 require 'uri'
 
 module Bigbertha
-  module Ref      
+  class Ref 
+    include Bigbertha::Action
+    
+    attr_reader :url, :uri
+    
+    def self.evt_value;         :value;     end
+    def self.evt_child_added;   :add_child; end
+    def self.evt_child_changed; :mod_child; end
+    def self.evt_child_removed; :rm_child;  end
+    def self.evt_child_moved;   :mv_child;  end
+                
+    def initialize( url, auth_token=nil )
+      @url        = url
+      @uri        = URI.parse( @url )
+      @auth_token = auth_token
+    end                                
+    
     def name
       parse_path[-1]
     end
-    
-    def val
-      read
-    end
-    
+                  
     def root
       return self if root?
-      Bigbertha::Load.new( @uri.scheme + '://' + @uri.host )            
+      Bigbertha::Ref.new( @uri.scheme + '://' + @uri.host, @auth_token )
     end
     
     def root?
@@ -22,11 +34,12 @@ module Bigbertha
     def parent
       return nil if root?
       path = parse_path[0..-2].join( "/" )
-      Bigbertha::Load.new( root.uri.merge(path).to_s )
+      Bigbertha::Ref.new( root.uri.merge(path).to_s, @auth_token )
     end
     
-    def child( child_path )
-      Bigbertha::Load.new( "#{uri.to_s}/#{child_path}" )
+    def child( *child_path )
+      child_path = (child_path.is_a?(Array) ? child_path.join('/') : child_path )
+      Bigbertha::Ref.new( "#{uri.to_s}/#{child_path}", @auth_token )
     end
       
     def child?( child_path )
@@ -54,7 +67,6 @@ module Bigbertha
       @url
     end
     
-        
     private
               
     def parse_path

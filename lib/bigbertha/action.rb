@@ -10,6 +10,7 @@ module Bigbertha
       res  = handle_response( resp, location )
       res.is_a?(Map) ? Snapshot.new( res ).to_map : res.is_a?(String) ? res.to_val : res
     end
+    alias :val :read
             
     def set( data )
       location = json_url
@@ -65,7 +66,7 @@ module Bigbertha
       end
       resp = Typhoeus.post( location, gen_opts( opts ) )
       res = handle_response( resp, location )
-      Bigbertha::Load.new( uri.to_s + '/' + res.name )
+      Bigbertha::Ref.new( uri.to_s + '/' + res.name )
     end
   
     def set_priority( priority )

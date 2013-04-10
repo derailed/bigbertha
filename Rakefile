@@ -19,4 +19,11 @@ task :clean do
   FileUtils.rm_r( cov ) if File.exists?( cov )
 end
 
+desc 'Run samples'
+task :samples do
+  path = File.expand_path( File.join( %w(.. examples ** *.rb) ), __FILE__ )
+puts path.inspect  
+  Dir.glob(path).sort.each { |example| puts example;%x(ruby #{example}) }
+end
+
 task default: :spec

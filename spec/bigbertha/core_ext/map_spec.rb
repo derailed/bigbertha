@@ -8,7 +8,7 @@ describe Map do
         curr = Map(:a,2)
         evts = prev.diff( curr )
         evts.should have(1).item
-        evts.first.event_type.should == Bigbertha::Load.evt_value
+        evts.first.event_type.should == Bigbertha::Ref.evt_value
         evts.first.ref.should == 'a'
       end    
     
@@ -17,7 +17,7 @@ describe Map do
         curr = Map(:a,2)
         evts = prev.diff( curr )
         evts.should have(1).item
-        evts.first.event_type.should == Bigbertha::Load.evt_child_added
+        evts.first.event_type.should == Bigbertha::Ref.evt_child_added
         evts.first.ref.should == 'a'
       end    
     
@@ -26,7 +26,7 @@ describe Map do
         curr = Map.new
         evts = prev.diff( curr )
         evts.should have(1).item
-        evts.first.event_type.should == Bigbertha::Load.evt_child_removed
+        evts.first.event_type.should == Bigbertha::Ref.evt_child_removed
         evts.first.ref.should == 'a'
       end
     end
@@ -37,7 +37,7 @@ describe Map do
         curr = Map({a:{a_1:10, a_2:20}})
         evts = prev.diff( curr )
         evts.should have(1).item
-        evts.first.event_type.should == Bigbertha::Load.evt_value
+        evts.first.event_type.should == Bigbertha::Ref.evt_value
         evts.first.ref.should == 'a'
       end
     end

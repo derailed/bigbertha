@@ -1,6 +1,6 @@
 require 'bigbertha'
 
-ref = Bigbertha::Load.new( ENV['fb_url'] )
+ref = Bigbertha::Ref.new( ENV['fb_url'] )
 ref.remove
 data = {
   a: 0,
