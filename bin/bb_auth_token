@@ -1,0 +1,76 @@
+#!/usr/bin/env ruby
+require 'bundler'
+Bundler.require
+
+Main {
+  argument( 'secret' ) {
+    description 'Specifies the firebase secret token'
+    cast        :string
+  }
+  option( 'expiry' ) {
+    description 'Time(int) at which the auth token will be considered invalid'
+    cast        :integer
+    argument    :optional
+  }
+  option( 'valid_from' ) {
+    description 'Time(int) before which the auth token will be considered invalid'
+    cast        :integer
+    argument    :optional
+  }  
+  option( 'debug' ) {
+    description 'Turns on debuging mode for security rules'
+    argument    :optional
+    cast        :boolean
+    defaults    false
+  }
+  option( 'simulate' ) {
+    description 'Runs security rules but does not change the data'
+    argument    :optional
+    cast        :boolean
+    defaults    false
+  }
+  option( 'admin' ) {
+    description 'Generates auth token for administrator'
+    argument    :optional    
+    cast        :boolean
+    defaults    false
+  }
+  option( 'data' ) {
+    description 'Addtional user auth data, specifies has a json'
+    argument    :optional
+    cast        :string
+    defaults    ''
+  }
+  
+  def print_summary( opts, data, token )
+    puts "FIREBASE AUTH TOKEN GENERATED!"
+    puts '-'*100
+    puts "o This token was generated with the following:"
+    puts "  options: #{opts.inspect}"
+    puts "  data:    #{data.inspect}"
+    puts '-'*100
+    puts '='*200
+    puts token
+    puts '='*200
+  end
+  
+  def run
+    gen = Firebase::FirebaseTokenGenerator.new( params['secret'].value )
+    opts = {}
+    %w(admin simulate debug expiry valid_from).each do |key|
+      opts[key.to_sym] = params[key].value if params[key].value != nil
+    end    
+    unless params['data'].value.empty?
+      data = JSON.parse( params['data'].value )
+    else
+      data = {}
+    end
+    token = gen.create_token( data, opts)
+    print_summary( opts, data, token )
+  rescue => boom
+    puts '='*200    
+    puts "HOY! Firebase auth token generation failed!"
+    puts boom
+    puts '='*200    
+  end
+}

@@ -5,6 +5,7 @@ Bundler.require
 Bundler::GemHelper.install_tasks
 
 $LOAD_PATH.unshift File.expand_path("../lib", __FILE__)
+load 'tasks/auth_token.rake'
 
 require 'rspec/core/rake_task'
 RSpec::Core::RakeTask.new(:spec) do |t|
