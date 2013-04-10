@@ -23,8 +23,9 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
   
-  s.add_dependency 'main'
-  s.add_dependency 'map'     , '~> 6.3.0'
-  s.add_dependency 'typhoeus', '~> 0.6.2'
-  s.add_dependency 'values'  , '~> 1.5.0'
+  s.add_dependency 'main'                    , '~> 5.2.0'
+  s.add_dependency 'map'                     , '~> 6.3.0'
+  s.add_dependency 'typhoeus'                , '~> 0.6.2'
+  s.add_dependency 'values'                  , '~> 1.5.0'
+  s.add_dependency 'firebase_token_generator', '~> 1.0.1'
 end
