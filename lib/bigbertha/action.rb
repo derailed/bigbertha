@@ -114,6 +114,7 @@ module Bigbertha
         raise PermissionDeniedError, "No permission for #{location}"
       end
       unless resp.success?
+puts resp.inspect        
         raise InvalidRequestError, "<#{resp.return_code}> Unable to perform request #{location}"
       end
       if resp.body.empty? or resp.body == "null"
