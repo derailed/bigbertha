@@ -57,7 +57,7 @@ Main {
   
   def map_key( key )
     keys = { valid_from: 'notBefore' }
-    key[key] || key
+    keys[key] || key
   end
   
   def run
