@@ -64,8 +64,8 @@ Main {
   def run
     gen = Firebase::FirebaseTokenGenerator.new( params['secret'].value )
     opts = {}
-    %w(admin simulate debug).each do |key|
-      opts[map_key( key.to_sym )] = params[key].value unless params[key].value
+    %w(admin simulate debug).each do |key|      
+      opts[map_key( key.to_sym )] = params[key].value unless params[key].value.nil?
     end    
     %w(expires valid_from).each do |key|
       opts[map_key( key.to_sym)] = Time.now.to_i + params[key].value.to_i*24*60*60 unless params[key].value == 0
