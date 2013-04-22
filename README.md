@@ -351,3 +351,6 @@ Bigbertha is released under the [MIT](http://opensource.org/licenses/MIT) licens
     + Added command line exec bb_auth_token to generate auth tokens
     + Added splat args to child
     + Deprecated Load. Use Ref from now on
+  + 0.0.5
+    + Added auth token expiration
+    + Added irb console bin
