@@ -7,10 +7,7 @@ Gem::Specification.new do |s|
   s.version     = Bigbertha::VERSION
   s.platform    = Gem::Platform::RUBY
 
-  s.authors     = [
-    "Fernand Galiana"
-  ]
-
+  s.authors           = ["Fernand Galiana"]
   s.email             = ["fernand.galiana@gmail.com"]
   s.homepage          = "http://derailed.github.io/bigbertha"
   s.summary           = %q{Ruby implementation for your Firebase battery}

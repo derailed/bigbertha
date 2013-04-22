@@ -17,6 +17,8 @@ desc 'Cleanup build artifacts'
 task :clean do
   cov = File.expand_path( File.join( %w(.. coverage) ), __FILE__ ) 
   FileUtils.rm_r( cov ) if File.exists?( cov )
+  pkg = File.expand_path( File.join( %w(.. pkg) ), __FILE__ ) 
+  FileUtils.rm_r( pkg ) if File.exists?( pkg )  
 end
 
 desc 'Run samples'

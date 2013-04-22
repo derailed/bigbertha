@@ -8,15 +8,16 @@ Main {
     cast        :string
   }
   option( 'expires' ) {
-    description 'Time(int) at which the auth token will be considered invalid'
+    description 'Number of days at which the auth token will be considered invalid. Default[30]'
     cast        :integer
     argument    :optional
-    default     Time.now.to_i + 2*24*60*60
+    defaults    30
   }
   option( 'valid_from' ) {
-    description 'Time(int) before which the auth token will be considered invalid'
+    description 'Number of days before which the auth token will be considered invalid. Default[0]'
     cast        :integer
     argument    :optional
+    defaults    0
   }  
   option( 'debug' ) {
     description 'Turns on debuging mode for security rules'
@@ -63,9 +64,12 @@ Main {
   def run
     gen = Firebase::FirebaseTokenGenerator.new( params['secret'].value )
     opts = {}
-    %w(admin simulate debug expires valid_from).each do |key|
-      opts[map_key( key.to_sym )] = params[key].value if params[key].value != nil
+    %w(admin simulate debug).each do |key|
+      opts[map_key( key.to_sym )] = params[key].value unless params[key].value
     end    
+    %w(expires valid_from).each do |key|
+      opts[map_key( key.to_sym)] = Time.now.to_i + params[key].value.to_i*24*60*60 unless params[key].value == 0
+    end
     unless params['data'].value.empty?
       data = JSON.parse( params['data'].value )
     else

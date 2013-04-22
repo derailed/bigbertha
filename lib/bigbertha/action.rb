@@ -113,9 +113,9 @@ module Bigbertha
       if resp.response_code == 403
         raise PermissionDeniedError, "No permission for #{location}"
       end
-      unless resp.success?
-puts resp.inspect        
-        raise InvalidRequestError, "<#{resp.return_code}> Unable to perform request #{location}"
+      unless resp.success?        
+        error = "-- " + JSON.parse( resp.body )['error'] rescue ""        
+        raise InvalidRequestError, "<#{resp.return_code}> Unable to perform request #{location} #{error}"        
       end
       if resp.body.empty? or resp.body == "null"
         raise NoDataError, "No data found at location #{location}"
